@@ -41,7 +41,21 @@ class HelloPlugin(Plugin):
     def __init__(self, plugin_host: PluginHost):
         if not check_config():
             logging.error("[rev] 已生成配置文件(revcfg.py)，请按照其中注释填写配置文件后重启程序")
-            plugin_host.notify_admin("[rev] 已生成配置文件(revcfg.py)，请按照其中注释填写配置文件后重启程序")
+            # plugin_host.notify_admin("[rev] 已生成配置文件(revcfg.py)，请按照其中注释填写配置文件后重启程序")
+            return
+
+        import revcfg
+
+        try:
+            self.chatbot = Chatbot(
+                config=revcfg.openai_account
+            )
+            # plugin_host.notify_admin("[rev] 逆向库初始化成功")
+        except:
+            # 输出完整的错误信息
+            # plugin_host.notify_admin("[rev] 逆向库初始化失败，请检查配置文件(revcfg.py)是否正确")
+            logging.error("[rev] 逆向库初始化失败，请检查配置文件(revcfg.py)是否正确")
+            logging.error("[rev] " + traceback.format_exc())
             return
 
         # 当收到个人消息时触发
@@ -58,7 +72,7 @@ class HelloPlugin(Plugin):
             
             event.add_return(
                 "reply",
-                ["[rev] "+reply_dict['message']],
+                ["{}".format(revcfg.reply_prefix)+reply_dict['message']],
             )
             event.prevent_default()
             event.prevent_postorder()
@@ -67,19 +81,6 @@ class HelloPlugin(Plugin):
         @on(GroupNormalMessageReceived)
         def group_normal_message_received(inst, event: EventContext, **kwargs):
             pass
-
-        import revcfg
-
-        try:
-
-            self.chatbot = Chatbot(
-                config=revcfg.openai_account
-            )
-        except:
-            # 输出完整的错误信息
-            plugin_host.notify_admin("[rev] 逆向库初始化失败，请检查配置文件(revcfg.py)是否正确")
-            logging.error("[rev] 逆向库初始化失败，请检查配置文件(revcfg.py)是否正确")
-            logging.error("[rev] " + traceback.format_exc())
 
     def make_reply(self, prompt, **kwargs) -> dict:
         reply_gen = self.chatbot.ask(prompt, **kwargs)
