@@ -5,6 +5,8 @@ from pkg.plugin.host import EventContext, PluginHost
 
 import os
 
+from revChatGPT.V1 import Chatbot
+
 """
 接入ChatGPT的逆向库
 """
@@ -33,16 +35,33 @@ def check_config():
 @register(name="revLibs", description="接入acheong08/ChatGPT等逆向库", version="0.1", author="RockChinQ")
 class HelloPlugin(Plugin):
 
+    chatbot: Chatbot = None
+
     # 插件加载时触发
     def __init__(self, plugin_host: PluginHost):
         if not check_config():
             logging.error("[rev] 已生成配置文件(revcfg.py)，请按照其中注释填写配置文件后重启程序")
+            plugin_host.notify_admin("[rev] 已生成配置文件(revcfg.py)，请按照其中注释填写配置文件后重启程序")
             return
 
         # 当收到个人消息时触发
         @on(PersonNormalMessageReceived)
         def person_normal_message_received(inst, event: EventContext, **kwargs):
-            pass
+            if self.chatbot is None:
+                return
+
+            reply_dict = inst.make_reply(
+                            prompt=kwargs['text_message']
+                        )
+
+            logging.debug("[rev] " + str(reply_dict))
+            
+            event.add_return(
+                "reply",
+                ["[rev] "+reply_dict['message']],
+            )
+            event.prevent_default()
+            event.prevent_postorder()
 
         # 当收到群消息时触发
         @on(GroupNormalMessageReceived)
@@ -51,30 +70,25 @@ class HelloPlugin(Plugin):
 
         import revcfg
 
-        from revChatGPT.V1 import Chatbot
-
         try:
 
             self.chatbot = Chatbot(
                 config=revcfg.openai_account
             )
-
-            self.debug("你好！")
         except:
             # 输出完整的错误信息
+            plugin_host.notify_admin("[rev] 逆向库初始化失败，请检查配置文件(revcfg.py)是否正确")
             logging.error("[rev] 逆向库初始化失败，请检查配置文件(revcfg.py)是否正确")
             logging.error("[rev] " + traceback.format_exc())
 
-    def debug(self, msg):
-        logging.debug("[rev] " + msg)
-        for data in self.chatbot.ask(
-            msg,
-            conversation_id=self.chatbot.config.get('conversation'),
-            parent_id=self.chatbot.config.get('parent_id'),
-        ):
-            print(data['message'], end="", flush=True)
+    def make_reply(self, prompt, **kwargs) -> dict:
+        reply_gen = self.chatbot.ask(prompt, **kwargs)
+        reply = {}
 
-        print()
+        for r in reply_gen:
+            reply = r
+
+        return reply
 
     # 插件卸载时触发
     def __del__(self):
