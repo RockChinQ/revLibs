@@ -41,6 +41,14 @@ class HelloPlugin(Plugin):
 
     # 插件加载时触发
     def __init__(self, plugin_host: PluginHost):
+        # 执行依赖库更新
+        # try:
+        #     import plugins.revLibs.pkg.utils as utils
+        #     # utils.upgrade_revlibs()
+        # except:
+        #     traceback.print_exc()
+        #     logging.warn("[rev] 依赖库更新失败，不能确保逆向库正常运行")
+
         if not check_config():
             logging.error("[rev] 已生成配置文件(revcfg.py)，请按照其中注释填写配置文件后重启程序")
             # plugin_host.notify_admin("[rev] 已生成配置文件(revcfg.py)，请按照其中注释填写配置文件后重启程序")
@@ -65,12 +73,12 @@ class HelloPlugin(Plugin):
             return
 
         import config
-        config.process_message_timeout = 5*60
-        logging.info("[rev] 已将主程序消息处理超时时间设置为5分钟")
+        config.process_message_timeout = 10*60
+        logging.info("[rev] 已将主程序消息处理超时时间设置为10分钟")
 
-        # 当收到个人消息时触发
         @on(PersonNormalMessageReceived)
-        def person_normal_message_received(inst, event: EventContext, **kwargs):
+        @on(GroupNormalMessageReceived)
+        def normal_message_received(inst, event: EventContext, **kwargs):
             try:
                 reply_message = revss.get_session(kwargs['launcher_type']+"_"+str(kwargs['launcher_id'])).get_reply(kwargs['text_message'])
 
@@ -88,11 +96,6 @@ class HelloPlugin(Plugin):
                 )
             event.prevent_default()
             event.prevent_postorder()
-
-        # 当收到群消息时触发
-        @on(GroupNormalMessageReceived)
-        def group_normal_message_received(inst, event: EventContext, **kwargs):
-            pass
 
     def make_reply(self, prompt, **kwargs) -> dict:
         reply_gen = self.chatbot.ask(prompt, **kwargs)
