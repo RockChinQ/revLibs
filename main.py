@@ -7,6 +7,8 @@ import os
 
 from revChatGPT.V1 import Chatbot
 
+import plugins.revLibs.pkg.process.revss as revss
+
 """
 接入ChatGPT的逆向库
 """
@@ -47,10 +49,14 @@ class HelloPlugin(Plugin):
         import revcfg
 
         try:
-            self.chatbot = Chatbot(
-                config=revcfg.openai_account
-            )
+            import plugins.revLibs.pkg.process.impls.v1impl as v1impl
+
+            v1implInst = v1impl.RevChatGPTV1()
+
+            import plugins.revLibs.pkg.process.revss as revss
+            revss.__rev_interface_impl__ = v1implInst
             # plugin_host.notify_admin("[rev] 逆向库初始化成功")
+            logging.info("[rev] 逆向库初始化成功")
         except:
             # 输出完整的错误信息
             # plugin_host.notify_admin("[rev] 逆向库初始化失败，请检查配置文件(revcfg.py)是否正确")
@@ -58,22 +64,28 @@ class HelloPlugin(Plugin):
             logging.error("[rev] " + traceback.format_exc())
             return
 
+        import config
+        config.process_message_timeout = 5*60
+        logging.info("[rev] 已将主程序消息处理超时时间设置为5分钟")
+
         # 当收到个人消息时触发
         @on(PersonNormalMessageReceived)
         def person_normal_message_received(inst, event: EventContext, **kwargs):
-            if self.chatbot is None:
-                return
+            try:
+                reply_message = revss.get_session(kwargs['launcher_type']+"_"+str(kwargs['launcher_id'])).get_reply(kwargs['text_message'])
 
-            reply_dict = inst.make_reply(
-                            prompt=kwargs['text_message']
-                        )
+                logging.debug("[rev] " + reply_message)
 
-            logging.debug("[rev] " + str(reply_dict))
-            
-            event.add_return(
-                "reply",
-                ["{}".format(revcfg.reply_prefix)+reply_dict['message']],
-            )
+                event.add_return(
+                    "reply",
+                    ["{}".format(revcfg.reply_prefix)+reply_message],
+                )
+            except Exception as e:
+                logging.error("[rev] " + traceback.format_exc())
+                event.add_return(
+                    "reply",
+                    ["{}".format(revcfg.reply_prefix)+"处理消息时出现错误，请联系管理员"],
+                )
             event.prevent_default()
             event.prevent_postorder()
 
