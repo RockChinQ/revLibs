@@ -25,6 +25,9 @@ class RevSession:
         self.name = name
         self.__rev_interface_impl__: RevLibInterface = __rev_interface_impl_class__()
 
+    def get_rev_lib_inst(self):
+        return self.__rev_interface_impl__.get_rev_lib_inst()
+
     def get_reply(self, prompt: str, **kwargs) -> str:
         """获取回复"""
         if self.__rev_interface_impl__ is None:

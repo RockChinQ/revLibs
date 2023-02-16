@@ -18,6 +18,9 @@ class RevChatGPTV1(RevLibInterface):
             config=revcfg.openai_account
         )
 
+    def get_rev_lib_inst(self):
+        return self.chatbot
+
     def get_reply(self, prompt: str, **kwargs) -> Tuple[str, dict]:
         try:
             __thr_lock__.acquire()

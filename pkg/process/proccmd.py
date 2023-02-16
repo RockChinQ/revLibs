@@ -14,14 +14,34 @@ def process_command(session_name: str, **kwargs) -> str:
         session.reset()
         reply_message = "已重置会话"
     elif cmd == 'list':
-        pass
+        page = 1
+        if len(params)>=1:
+            page = int(params[0])
+        
+        cbinst = session.get_rev_lib_inst()
+        from revChatGPT.V1 import Chatbot
+        assert isinstance(cbinst, Chatbot)
+
+        conversations = cbinst.get_conversations((page-1)*10, 10)
+
+        reply_message = "会话列表 (第{}页) 本页{}个会话:\n".format(page, len(conversations))
+        for conversation in conversations:
+            reply_message += "#{}: {}\n".format(conversation['id'], conversation['create_time'])
+
     elif cmd == 'prompt':
-        reply_message = "正在使用逆向库插件，暂不支持查看对话前文。"
+        # cbinst = session.get_rev_lib_inst()
+        # from revChatGPT.V1 import Chatbot
+        # assert isinstance(cbinst, Chatbot)
+        # reply_message = str(cbinst.get_msg_history(session.conversation_id))
+        reply_message = "正在使用逆向库，不支持查看历史消息"
     elif cmd == "last":
-        pass
+        reply_message = "正在使用逆向库，不支持切换到前一次会话"
     elif cmd == "next":
-        pass
+        reply_message = "正在使用逆向库，不支持切换到后一次会话"
     elif cmd == "resend":
-        reply_message = session.resend()
+        if session.__ls_prompt__ == "":
+            reply_message = "没有上一条成功回复的消息"
+        else:
+            reply_message = session.resend()
 
     return reply_message
