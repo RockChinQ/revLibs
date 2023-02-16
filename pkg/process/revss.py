@@ -39,18 +39,16 @@ class RevSession:
         if self.parent_id is not None:
             kwargs['parent_id'] = self.parent_id
 
-        reply_message, reply_dict = self.__rev_interface_impl__.get_reply(prompt, **kwargs)
         self.__ls_prompt__ = prompt
+        # 改成迭代器以支持回复分节
+        for reply_period_msg, reply_period_dict in self.__rev_interface_impl__.get_reply(prompt, **kwargs):
+            if self.conversation_id is None:
+                self.conversation_id = reply_period_dict['conversation_id']
 
-        # logging.debug("revLibs reply: {}".format(reply_dict))
-
-        if self.conversation_id is None:
-            self.conversation_id = reply_dict['conversation_id']
-
-        if self.parent_id is None:
-            self.parent_id = reply_dict['parent_id']
-
-        return reply_message
+            if self.parent_id is None:
+                self.parent_id = reply_period_dict['parent_id']
+                
+            yield reply_period_msg
 
     def reset(self):
         """重置会话"""

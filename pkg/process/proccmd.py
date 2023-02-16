@@ -33,11 +33,11 @@ def process_command(session_name: str, **kwargs) -> str:
         # from revChatGPT.V1 import Chatbot
         # assert isinstance(cbinst, Chatbot)
         # reply_message = str(cbinst.get_msg_history(session.conversation_id))
-        reply_message = "正在使用逆向库，不支持查看历史消息"
+        reply_message = "正在使用逆向库，暂不支持查看历史消息"
     elif cmd == "last":
-        reply_message = "正在使用逆向库，不支持切换到前一次会话"
+        reply_message = "正在使用逆向库，暂不支持切换到前一次会话"
     elif cmd == "next":
-        reply_message = "正在使用逆向库，不支持切换到后一次会话"
+        reply_message = "正在使用逆向库，暂不支持切换到后一次会话"
     elif cmd == "resend":
         if session.__ls_prompt__ == "":
             reply_message = "没有上一条成功回复的消息"

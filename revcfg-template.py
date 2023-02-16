@@ -14,3 +14,18 @@ openai_account = {
 # 消息回复前缀
 # 建议保留此前缀，以便区分GPT-3和此插件的回复
 reply_prefix = "[REV]"
+
+# 获取回复失败时的重试次数
+# 若为0则不重试
+retry_when_fail = 3
+
+# 超长消息阈值
+# 若消息长度超过此阈值，则按照以下策略处理
+# 如果你不需要使用分节功能（即任何消息都以普通消息的形式回复），
+# 请将此值设置为超大的值（如 2147483647）
+blog_msg_threshold = 256
+
+# 超长消息处理策略
+# - "send_section": 发送前部分消息，继续等待回复
+# - "forward_msg_component": 以转发消息的形式发送
+blog_msg_strategy = "forward_msg_component"

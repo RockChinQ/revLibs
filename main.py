@@ -75,27 +75,30 @@ class HelloPlugin(Plugin):
             return
 
         import config
+
+        revcfg.process_message_timeout = config.process_message_timeout
         config.process_message_timeout = 10*60
         logging.info("[rev] 已将主程序消息处理超时时间设置为10分钟")
 
         @on(PersonNormalMessageReceived)
         @on(GroupNormalMessageReceived)
         def normal_message_received(inst, event: EventContext, **kwargs):
+            reply_message = ""
             try:
                 reply_message = procmsg.process_message(session_name=kwargs['launcher_type']+"_"+str(kwargs['launcher_id']),
-                                                        prompt=kwargs['text_message'],)
+                                                        prompt=kwargs['text_message'], **kwargs)
 
                 logging.debug("[rev] " + reply_message)
 
-                event.add_return(
-                    "reply",
-                    ["{}".format(revcfg.reply_prefix)+reply_message],
-                )
+                reply_message = reply_message
             except Exception as e:
                 logging.error("[rev] " + traceback.format_exc())
+                reply_message = "处理消息时出现错误，请联系管理员"+"\n"+traceback.format_exc()
+                
+            if reply_message != "":
                 event.add_return(
                     "reply",
-                    ["{}".format(revcfg.reply_prefix)+"处理消息时出现错误，请联系管理员"+"\n"+traceback.format_exc()],
+                    ["{}".format(revcfg.reply_prefix)+reply_message]
                 )
 
             event.prevent_default()
