@@ -32,7 +32,14 @@ class RevChatGPTV1(RevLibInterface):
             for r in reply_gen:
                 reply = r
 
+            logging.debug("接收完毕: {}".format(reply))
+
             return reply['message'], reply
         finally:
             __thr_lock__.release()
 
+    def reset_chat(self):
+        self.chatbot.reset_chat()
+
+    def rollback(self):
+        self.chatbot.rollback_conversation()

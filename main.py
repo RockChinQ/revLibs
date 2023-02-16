@@ -8,6 +8,8 @@ import os
 from revChatGPT.V1 import Chatbot
 
 import plugins.revLibs.pkg.process.revss as revss
+import plugins.revLibs.pkg.process.procmsg as procmsg
+import plugins.revLibs.pkg.process.proccmd as proccmd
 
 """
 接入ChatGPT的逆向库
@@ -59,10 +61,10 @@ class HelloPlugin(Plugin):
         try:
             import plugins.revLibs.pkg.process.impls.v1impl as v1impl
 
-            v1implInst = v1impl.RevChatGPTV1()
+            v1implInst = v1impl.RevChatGPTV1
 
             import plugins.revLibs.pkg.process.revss as revss
-            revss.__rev_interface_impl__ = v1implInst
+            revss.__rev_interface_impl_class__ = v1implInst
             # plugin_host.notify_admin("[rev] 逆向库初始化成功")
             logging.info("[rev] 逆向库初始化成功")
         except:
@@ -80,7 +82,8 @@ class HelloPlugin(Plugin):
         @on(GroupNormalMessageReceived)
         def normal_message_received(inst, event: EventContext, **kwargs):
             try:
-                reply_message = revss.get_session(kwargs['launcher_type']+"_"+str(kwargs['launcher_id'])).get_reply(kwargs['text_message'])
+                reply_message = procmsg.process_message(session_name=kwargs['launcher_type']+"_"+str(kwargs['launcher_id']),
+                                                        prompt=kwargs['text_message'],)
 
                 logging.debug("[rev] " + reply_message)
 
@@ -92,10 +95,37 @@ class HelloPlugin(Plugin):
                 logging.error("[rev] " + traceback.format_exc())
                 event.add_return(
                     "reply",
-                    ["{}".format(revcfg.reply_prefix)+"处理消息时出现错误，请联系管理员"],
+                    ["{}".format(revcfg.reply_prefix)+"处理消息时出现错误，请联系管理员"+"\n"+traceback.format_exc()],
                 )
+
             event.prevent_default()
             event.prevent_postorder()
+
+        @on(PersonCommandSent)
+        @on(GroupCommandSent)
+        def command_send(inst, event: EventContext, **kwargs):
+            reply_message = ""
+            try:
+                reply_message = proccmd.process_command(session_name=kwargs['launcher_type']+"_"+str(kwargs['launcher_id']),
+                                                        **kwargs)
+
+                logging.debug("[rev] " + reply_message)
+                event.add_return(
+                    "reply",
+                    ["{}(cmd)".format(revcfg.reply_prefix)+reply_message],
+                )
+            except Exception as e:
+                logging.error("[rev] " + traceback.format_exc())
+                reply_message = "处理命令时出现错误，请联系管理员"+"\n"+traceback.format_exc()
+                event.add_return(
+                    "reply",
+                    ["{}(cmd)".format(revcfg.reply_prefix)+"处理命令时出现错误，请联系管理员"+"\n"+traceback.format_exc()],
+                )
+            
+            if reply_message != "":
+                event.prevent_default()
+                event.prevent_postorder()
+
 
     def make_reply(self, prompt, **kwargs) -> dict:
         reply_gen = self.chatbot.ask(prompt, **kwargs)
