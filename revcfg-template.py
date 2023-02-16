@@ -1,3 +1,7 @@
+# 使用acheong/ChatGPT库的方式
+# 目前仅支持V1版本
+acheong_chatgpt_version = "V1"
+
 # OpenAI账户信息
 # 目前支持两种登录方式：账号密码登录 和 SessionToken登录
 # 前者适用于默认的注册方式得到的账号，后者适用于使用Google/Microsoft账号登录的账号
