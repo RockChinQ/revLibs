@@ -59,8 +59,9 @@ class RevSession:
     def resend(self):
         """重新发送上一条消息"""
         self.__rev_interface_impl__.rollback()
-        return self.get_reply(self.__ls_prompt__)
-
+        import plugins.revLibs.pkg.process.procmsg as procmsg  # 不优雅的解决办法
+        return procmsg.process_message(self.name, self.__ls_prompt__, None, launcher_type=self.name.split("_")[0], launcher_id=int(self.name.split("_")[1]))
+        
     
 def get_session(name: str) -> RevSession:
     """获取session"""

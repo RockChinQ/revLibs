@@ -6,10 +6,18 @@ from mirai import MessageChain
 from mirai.models.message import Forward,ForwardMessageNode
 import traceback
 
+__host__: PluginHost = None
+
 def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) -> str:
     """处理消息"""
+    global __host__
     session: revss.RevSession = revss.get_session(session_name)
 
+    if __host__ is None:
+        __host__ = host
+    if host is None:
+        host = __host__
+    
     import revcfg
 
     # 重试循环
