@@ -1,6 +1,7 @@
-# 使用acheong08/ChatGPT库的方式
-# 目前仅支持V1版本
-acheong_chatgpt_version = "V1"
+# 选择使用的逆向库
+# 目前支持以下库：
+# - "acheong08/ChatGPT.V1": acheong08/ChatGPT库的V1版本
+reverse_lib = "acheong08/ChatGPT.V1"
 
 # [必填] OpenAI账户信息
 # 目前支持两种登录方式：账号密码登录 和 SessionToken登录
