@@ -6,8 +6,7 @@
 ## 使用方式
 
 > 若您未安装QChatGPT程序，请先查看原仓库[文档](https://github.com/RockChinQ/QChatGPT)
-
-**❗❗警告：目前仅支持境外主机使用（大陆、香港、澳门之外地区的主机）**
+> 目前已支持中国使用，请在revcfg.py中修改openai_account字段，按照注释使用access_token方式登录
 
 使用管理员账号私聊机器人发送指令:
 
