@@ -11,6 +11,8 @@ __host__: PluginHost = None
 def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) -> str:
     """处理消息"""
     global __host__
+
+    logging.info("[rev] 收到{}消息: {}".format(session_name, prompt))
     session: revss.RevSession = revss.get_session(session_name)
 
     if __host__ is None:
@@ -27,14 +29,17 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
         try:
             # 使用迭代器
             if revcfg.blog_msg_strategy == "send_section":
+                section_count = 0
                 for section in session.get_reply(prompt):
+                    section_count += 1
                     logging.info("分节回复: {}".format(section[:min(50, len(section))]))
                     if kwargs['launcher_type'] == 'group':
                         host.send_group_message(kwargs['launcher_id'], section)
                     elif kwargs['launcher_type'] == 'person':
                         host.send_person_message(kwargs['launcher_id'], section)
 
-                reply_message = "<已发送完毕>"
+                if section_count > 1:
+                    reply_message = "<已发送完毕>"
             elif revcfg.blog_msg_strategy == "forward_msg_component":
                 all_reply = ""
 
@@ -56,6 +61,8 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
                     )
 
                     message_chain = Forward(nodeList=[forward_msg_node])
+
+                    logging.info("[rev] 回复{}消息：{}".format(session_name, all_reply[:min(50, len(all_reply))]))
 
                     if kwargs['launcher_type'] == 'group':
                         host.send_group_message(kwargs['launcher_id'], message_chain)
