@@ -32,21 +32,14 @@ class RevSession:
         """获取回复"""
         if self.__rev_interface_impl__ is None:
             raise Exception("逆向接口未初始化")
-        
+
         if self.conversation_id is not None:
             kwargs['conversation_id'] = self.conversation_id
-
-        if self.parent_id is not None:
-            kwargs['parent_id'] = self.parent_id
 
         self.__ls_prompt__ = prompt
         # 改成迭代器以支持回复分节
         for reply_period_msg, reply_period_dict in self.__rev_interface_impl__.get_reply(prompt, **kwargs):
-            if self.conversation_id is None:
-                self.conversation_id = reply_period_dict['conversation_id']
-
-            if self.parent_id is None:
-                self.parent_id = reply_period_dict['parent_id']
+            self.conversation_id = reply_period_dict['conversation_id']
                 
             yield reply_period_msg
 
