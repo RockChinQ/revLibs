@@ -1,1 +1,1 @@
-revChatGPT>=2.3.0
+revChatGPT>=2.3.2

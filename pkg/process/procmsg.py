@@ -34,9 +34,9 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
                     section_count += 1
                     logging.info("分节回复: {}".format(section[:min(50, len(section))]))
                     if kwargs['launcher_type'] == 'group':
-                        host.send_group_message(kwargs['launcher_id'], section)
+                        host.send_group_message(kwargs['launcher_id'], "{}".format(revcfg.reply_prefix)+section)
                     elif kwargs['launcher_type'] == 'person':
-                        host.send_person_message(kwargs['launcher_id'], section)
+                        host.send_person_message(kwargs['launcher_id'], "{}".format(revcfg.reply_prefix)+section)
 
                 if section_count > 1:
                     reply_message = "<已发送完毕>"
