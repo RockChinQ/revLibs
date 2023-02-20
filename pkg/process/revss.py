@@ -41,7 +41,7 @@ class RevSession:
             logging.info("[rev] 会话id为空，将会创建新会话")
             #获取预设场景
             dprompt_ = dprompt.get_prompt(dprompt.get_current())
-            logging.info("[rev] 使用情景预设:".fotmat(dprompt_))
+            logging.info("[rev] 使用情景预设: {}".format(dprompt_))
             for msg_, reply_period_dict in self.__rev_interface_impl__.get_reply(dprompt_, **kwargs):
                 self.conversation_id = reply_period_dict['conversation_id']
             if self.conversation_id is not None:
