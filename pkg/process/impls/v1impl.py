@@ -52,6 +52,8 @@ class RevChatGPTV1(RevLibInterface):
             logging.debug("接收完毕: {}".format(reply))
 
             yield reply['message'], reply
+        except Exception as e:
+            raise e
         finally:
             __thr_lock__.release()
 

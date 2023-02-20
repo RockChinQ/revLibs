@@ -3,7 +3,7 @@
 # - "acheong08/ChatGPT.V1": acheong08/ChatGPT库的V1版本
 reverse_lib = "acheong08/ChatGPT.V1"
 
-# [必填] OpenAI账户信息
+# [必填][❗此说明很重要，请您认真阅读❗] OpenAI账户信息
 # 目前支持三种登录方式：账号密码登录、SessionToken登录、accessToken登录
 # 1.适用于默认的注册方式得到的账号，2.适用于使用Google/Microsoft账号登录的账号，3.适用于中国大陆主机
 # 以下默认使用账户密码方式登录。
@@ -24,6 +24,19 @@ reverse_lib = "acheong08/ChatGPT.V1"
 # 除了登录信息，还支持以下可选参数：
 #  - proxy: 代理服务器地址，格式为"protocol:ip:port"，例如"https://localhost:1080"
 #  - paid: 是否订阅了ChatGPT Plus服务，若为True则使用ChatGPT Plus服务
+#
+# **若要使用多个账户均衡负载，可以以列表的形式添加多个账户信息，例如：
+# openai_account = [
+#   {
+#     "email": "your email",
+#     "password": "your password"
+#   },
+#   {
+#     "email": "your email",
+#     "password": "your password"
+#   }
+# ]
+# 其中每个账户的格式符合前文所述的格式
 openai_account = {
     "email": "your email",  # 账户邮箱
     "password": "your password",  # 账户密码
