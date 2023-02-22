@@ -37,10 +37,16 @@ reverse_lib = "acheong08/ChatGPT.V1"
 #   }
 # ]
 # 其中每个账户的格式符合前文所述的格式
-openai_account = {
-    "email": "your email",  # 账户邮箱
-    "password": "your password",  # 账户密码
-}
+openai_account = [
+    {
+        "email": "your email",  # 账户邮箱
+        "password": "your password",  # 账户密码
+    }
+]
+
+# 账号重新恢复使用的时间间隔
+# 以分钟为单位
+openai_account_resume_interval = 60
 
 # 消息回复前缀
 # 建议保留此前缀，以便区分GPT-3和此插件的回复
