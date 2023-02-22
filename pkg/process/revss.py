@@ -1,6 +1,7 @@
 # 逆向库的session
 from plugins.revLibs.pkg.models.interface import RevLibInterface
 from plugins.revLibs.pkg.process.impls.v1impl import RevChatGPTV1
+import pkg.openai.dprompt as dprompt
 
 import logging
 
@@ -36,11 +37,20 @@ class RevSession:
         """获取回复"""
         if self.__rev_interface_impl__ is None:
             raise Exception("逆向接口未初始化")
-
+        
+        self.__ls_prompt__ = prompt
         if self.conversation_id is not None:
             kwargs['conversation_id'] = self.conversation_id
-
-        self.__ls_prompt__ = prompt
+        else :
+            logging.info("[rev] 会话id为空，将会创建新会话")
+            #获取预设场景
+            dprompt_ = dprompt.get_prompt(dprompt.get_current())
+            logging.info("[rev] 使用情景预设: {}".format(dprompt_))
+            for msg_, reply_period_dict in self.__rev_interface_impl__.get_reply(dprompt_, **kwargs):
+                self.conversation_id = reply_period_dict['conversation_id']
+            if self.conversation_id is not None:
+                kwargs['conversation_id'] = self.conversation_id
+        
         # 改成迭代器以支持回复分节
         for reply_period_msg, reply_period_dict in self.__rev_interface_impl__.get_reply(prompt, **kwargs):
             self.conversation_id = reply_period_dict['conversation_id']
