@@ -5,12 +5,12 @@ from revChatGPT.V1 import Chatbot
 
 import threading
 
-_thr_locks__: dict[str, threading.Lock] = {}
+__thr_locks__ = {}
 
 def get_lock(key: str):
-    if key not in _thr_locks__:
-        _thr_locks__[key] = threading.Lock()
-    return _thr_locks__[key]
+    if key not in __thr_locks__:
+        __thr_locks__[key] = threading.Lock()
+    return __thr_locks__[key]
 
 import logging
 
