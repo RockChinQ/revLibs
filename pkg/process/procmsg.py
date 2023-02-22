@@ -69,11 +69,17 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
                     elif kwargs['launcher_type'] == 'person':
                         host.send_person_message(kwargs['launcher_id'], message_chain)
                 else:
+                    # logging.info("[rev] 回复{}消息：{}".format(session_name, all_reply[:min(50, len(all_reply))]))
                     reply_message = all_reply
 
             break
         except Exception as e:
             traceback.print_exc()
+            if str(e).__contains__("Too many requests in 1 hour"):
+                session.__init__(session_name)
+                logging.warn("超过一小时限次，切换会话账户")
+                continue
+
             if fail_times < revcfg.retry_when_fail:
                 fail_times += 1
                 logging.warn("失败，重试({}/{})...".format(fail_times, revcfg.retry_when_fail))

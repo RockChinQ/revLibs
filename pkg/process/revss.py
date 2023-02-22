@@ -1,5 +1,6 @@
 # 逆向库的session
 from plugins.revLibs.pkg.models.interface import RevLibInterface
+from plugins.revLibs.pkg.process.impls.v1impl import RevChatGPTV1
 import pkg.openai.dprompt as dprompt
 
 import logging
@@ -24,7 +25,10 @@ class RevSession:
 
     def __init__(self, name: str):
         self.name = name
-        self.__rev_interface_impl__: RevLibInterface = __rev_interface_impl_class__()
+        if __rev_interface_impl_class__ is RevChatGPTV1:
+            logging.debug("[rev] 逆向接口实现为RevChatGPTV1")
+            self.__rev_interface_impl__, valid, acc = __rev_interface_impl_class__.create_instance()
+            self.reset()
 
     def get_rev_lib_inst(self):
         return self.__rev_interface_impl__.get_rev_lib_inst()
@@ -65,6 +69,7 @@ class RevSession:
         import plugins.revLibs.pkg.process.procmsg as procmsg  # 不优雅的解决办法
         return procmsg.process_message(self.name, self.__ls_prompt__, None, launcher_type=self.name.split("_")[0], launcher_id=int(self.name.split("_")[1]))
         
+    
     
 def get_session(name: str) -> RevSession:
     """获取session"""

@@ -12,10 +12,16 @@ class RevChatGPTV1(RevLibInterface):
     """acheong08/ChatGPT的逆向库接口 V1"""
     chatbot: Chatbot = None
 
-    def __init__(self):
-        import revcfg
+    @staticmethod
+    def create_instance() -> tuple[RevLibInterface, bool, dict]:
+        import plugins.revLibs.pkg.accounts.accmgr as accmgr
+        valid_acc, acc = accmgr.use_account()
+        return RevChatGPTV1(acc), valid_acc, acc
+
+    def __init__(self, cfg):
+        logging.debug("[rev] 初始化接口实现，使用账户配置: {}".format(cfg))
         self.chatbot = Chatbot(
-            config=revcfg.openai_account
+            config=cfg,
         )
 
     def get_rev_lib_inst(self):
@@ -52,6 +58,8 @@ class RevChatGPTV1(RevLibInterface):
             logging.debug("接收完毕: {}".format(reply))
 
             yield reply['message'], reply
+        except Exception as e:
+            raise e
         finally:
             __thr_lock__.release()
 
@@ -60,3 +68,6 @@ class RevChatGPTV1(RevLibInterface):
 
     def rollback(self):
         self.chatbot.rollback_conversation()
+
+
+    
