@@ -4,13 +4,21 @@ from plugins.revLibs.pkg.models.interface import RevLibInterface
 from revChatGPT.V1 import Chatbot
 
 import threading
-__thr_lock__: threading.Lock = threading.Lock()
+
+_thr_locks__: dict[str, threading.Lock] = {}
+
+def get_lock(key: str):
+    if key not in _thr_locks__:
+        _thr_locks__[key] = threading.Lock()
+    return _thr_locks__[key]
 
 import logging
 
 class RevChatGPTV1(RevLibInterface):
     """acheong08/ChatGPT的逆向库接口 V1"""
     chatbot: Chatbot = None
+
+    inst_name: str
 
     @staticmethod
     def create_instance() -> tuple[RevLibInterface, bool, dict]:
@@ -24,13 +32,15 @@ class RevChatGPTV1(RevLibInterface):
             config=cfg,
         )
 
+        self.inst_name = str(cfg)
+
     def get_rev_lib_inst(self):
         return self.chatbot
 
     def get_reply(self, prompt: str, **kwargs) -> Tuple[str, dict]:
         import revcfg
         try:
-            __thr_lock__.acquire()
+            get_lock(self.inst_name).acquire()
             if self.chatbot is None:
                 raise Exception("acheong08/ChatGPT.V1 逆向接口未初始化")
             
@@ -61,7 +71,7 @@ class RevChatGPTV1(RevLibInterface):
         except Exception as e:
             raise e
         finally:
-            __thr_lock__.release()
+            get_lock(self.inst_name).release()
 
     def reset_chat(self):
         self.chatbot.reset_chat()
