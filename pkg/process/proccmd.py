@@ -6,14 +6,14 @@ def process_command(session_name: str, **kwargs) -> str:
     cmd = kwargs['command']
     params = kwargs['params']
 
-    session: revss.RevSession = revss.get_session(session_name)
-
     reply_message = ""
 
     if cmd == 'reset':
+        session: revss.RevSession = revss.get_session(session_name)
         session.reset()
         reply_message = "已重置会话"
     elif cmd == 'list':
+        session: revss.RevSession = revss.get_session(session_name)
         page = 1
         if len(params)>=1:
             page = int(params[0])
@@ -39,6 +39,7 @@ def process_command(session_name: str, **kwargs) -> str:
     elif cmd == "next":
         reply_message = "正在使用逆向库，暂不支持切换到后一次会话"
     elif cmd == "resend":
+        session: revss.RevSession = revss.get_session(session_name)
         if session.__ls_prompt__ == "":
             reply_message = "没有上一条成功回复的消息"
         else:

@@ -13,7 +13,6 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
     global __host__
 
     logging.info("[rev] 收到{}消息: {}".format(session_name, prompt))
-    session: revss.RevSession = revss.get_session(session_name)
 
     if __host__ is None:
         __host__ = host
@@ -26,6 +25,7 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
     fail_times = 0
     reply_message = ""
     while True:
+        session: revss.RevSession = revss.get_session(session_name)
         try:
             # 使用迭代器
             if revcfg.blog_msg_strategy == "send_section":
