@@ -37,7 +37,7 @@ def check_config():
 
 # 注册插件
 @register(name="revLibs", description="接入acheong08/ChatGPT等逆向库", version="0.1", author="RockChinQ")
-class HelloPlugin(Plugin):
+class RevLibsPlugin(Plugin):
 
     chatbot: Chatbot = None
 
@@ -93,7 +93,12 @@ class HelloPlugin(Plugin):
                 reply_message = reply_message
             except Exception as e:
                 logging.error("[rev] " + traceback.format_exc())
-                reply_message = "处理消息时出现错误，请联系管理员"+"\n"+traceback.format_exc()
+                import config
+                if config.hide_exce_info_to_user:
+                    reply_message = config.alter_tip_message
+                    host.notify_admin("[rev] 处理消息时出现错误:\n"+traceback.format_exc())
+                else:
+                    reply_message = "处理消息时出现错误，请联系管理员"+"\n"+traceback.format_exc()
                 
             if reply_message != "":
                 event.add_return(
