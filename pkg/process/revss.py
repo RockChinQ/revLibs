@@ -23,6 +23,8 @@ class RevSession:
 
     __ls_prompt__: str = ""
 
+    __set_prompt__: str = ""
+
     def __init__(self, name: str):
         self.name = name
         if __rev_interface_impl_class__ is RevChatGPTV1:
@@ -52,6 +54,10 @@ class RevSession:
         #         kwargs['conversation_id'] = self.conversation_id
         
         dprompt_ = dprompt.get_prompt(dprompt.get_current())
+        if self.__set_prompt__ != "":
+            dprompt_ = self.__set_prompt__
+            self.__set_prompt__ = ""
+            
         if dprompt_ != "" and self.conversation_id is None:
             prompt = dprompt_ +" \n"+ prompt
             logging.info("[rev] 使用情景预设: {}".format(dprompt_))
@@ -62,11 +68,19 @@ class RevSession:
                 
             yield reply_period_msg
 
-    def reset(self):
+    def reset(self, using_prompt_name: str = None) -> str:
         """重置会话"""
         self.conversation_id = None
         self.parent_id = None
+        self.__ls_prompt__ = ""
         self.__rev_interface_impl__.reset_chat()
+        if using_prompt_name is not None:
+            for key in dprompt.get_prompt_dict():
+                if key.startswith(using_prompt_name):
+                    using_prompt_name = key
+                    break
+            self.__set_prompt__ = dprompt.get_prompt(using_prompt_name)
+            return using_prompt_name
 
     def resend(self):
         """重新发送上一条消息"""

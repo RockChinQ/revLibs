@@ -10,8 +10,12 @@ def process_command(session_name: str, **kwargs) -> str:
 
     if cmd == 'reset':
         session: revss.RevSession = revss.get_session(session_name)
-        session.reset()
-        reply_message = "已重置会话"
+        if len(params) >= 1:
+            prompt_whole_name = session.reset(params[0])
+            reply_message = "已重置会话，使用情景预设: {}".format(prompt_whole_name)
+        else:
+            session.reset()
+            reply_message = "已重置会话"
     elif cmd == 'list':
         session: revss.RevSession = revss.get_session(session_name)
         page = 1
