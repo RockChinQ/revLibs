@@ -25,11 +25,14 @@ class RevSession:
 
     __set_prompt__: str = ""
 
+    using_account: dict = None
+
     def __init__(self, name: str):
         self.name = name
         if __rev_interface_impl_class__ is RevChatGPTV1:
             logging.debug("[rev] 逆向接口实现为RevChatGPTV1")
             self.__rev_interface_impl__, valid, acc = __rev_interface_impl_class__.create_instance()
+            self.using_account = acc
             self.reset()
 
     def get_rev_lib_inst(self):

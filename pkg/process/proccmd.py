@@ -48,5 +48,29 @@ def process_command(session_name: str, **kwargs) -> str:
             reply_message = "没有上一条成功回复的消息"
         else:
             reply_message = session.resend()
+    elif cmd == "accs":
+        """查看每个账户的使用情况"""
+        import plugins.revLibs.pkg.accounts.accmgr as accmgr
 
-    return reply_message
+        reply_message = "账户列表:\n"
+
+        for account in accmgr.get_account_list():
+            """
+                - 账户名称
+            """
+            reply_message += "账户: {}\n  - ".format(accmgr.get_account_brief_name(account))
+
+            using = False
+            for k in revss.__sessions__:
+                v: revss.RevSession = revss.__sessions__[k]
+                if accmgr.get_account_brief_name(v.using_account) == accmgr.get_account_brief_name(account):
+                    reply_message += v.name + ", "
+                    using = True
+            if not using:
+                reply_message += "未使用"
+            else:
+                reply_message = reply_message[:-2]
+
+            reply_message += "\n\n"
+
+    return reply_message[:-1]

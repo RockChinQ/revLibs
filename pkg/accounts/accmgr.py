@@ -8,6 +8,17 @@ def get_account_list():
     return revcfg.openai_account
 
 
+def get_account_brief_name(account: dict):
+    if 'email' in account:
+        return account['email']
+    elif 'session_token' in account:
+        return "sessionToken: "+account['session_token'][:8]
+    elif 'access_token' in account:
+        return "accessToken: "+account['access_token'][:8]
+    else:
+        return "未知账户"
+
+
 def move_account_to_end(account: dict):
     # 将账户移动到末尾
     import revcfg
