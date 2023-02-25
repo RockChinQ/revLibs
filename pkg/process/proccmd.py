@@ -72,5 +72,6 @@ def process_command(session_name: str, **kwargs) -> str:
                 reply_message = reply_message[:-2]
 
             reply_message += "\n\n"
+        reply_message = reply_message[:-1]
 
-    return reply_message[:-1]
+    return reply_message
