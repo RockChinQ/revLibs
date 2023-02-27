@@ -3,10 +3,12 @@ import plugins.revLibs.pkg.process.revss as revss
 from pkg.plugin.host import PluginHost
 import logging
 from mirai import MessageChain
-from mirai.models.message import Forward,ForwardMessageNode
+from mirai.models.message import ForwardMessageNode
+from plugins.revLibs.pkg.models.forward import Forward, ForwardMessageDiaplay
 import traceback
 
 __host__: PluginHost = None
+
 
 def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) -> str:
     """处理消息"""
@@ -18,7 +20,7 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
         __host__ = host
     if host is None:
         host = __host__
-    
+
     import revcfg
 
     # 重试循环
@@ -34,9 +36,9 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
                     section_count += 1
                     logging.info("分节回复: {}".format(section[:min(50, len(section))]))
                     if kwargs['launcher_type'] == 'group':
-                        host.send_group_message(kwargs['launcher_id'], "{}".format(revcfg.reply_prefix)+section)
+                        host.send_group_message(kwargs['launcher_id'], "{}".format(revcfg.reply_prefix) + section)
                     elif kwargs['launcher_type'] == 'person':
-                        host.send_person_message(kwargs['launcher_id'], "{}".format(revcfg.reply_prefix)+section)
+                        host.send_person_message(kwargs['launcher_id'], "{}".format(revcfg.reply_prefix) + section)
 
                 if section_count > 1:
                     reply_message = "<已发送完毕>"
@@ -60,7 +62,18 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
                         message_chain=MessageChain([all_reply])
                     )
 
-                    message_chain = Forward(nodeList=[forward_msg_node])
+                    forward_msg_display = ForwardMessageDiaplay(
+                        title="群聊的聊天记录",
+                        brief="[聊天记录]",
+                        source="聊天记录",
+                        preview=[all_reply],
+                        summary="查看1条转发消息"
+                    )
+
+                    message_chain = Forward(
+                        display=forward_msg_display,
+                        node_list=[forward_msg_node]
+                    )
 
                     logging.info("[rev] 回复{}消息：{}".format(session_name, all_reply[:min(50, len(all_reply))]))
 
