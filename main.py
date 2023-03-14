@@ -134,6 +134,55 @@ class RevLibsPlugin(Plugin):
                 event.prevent_default()
                 event.prevent_postorder()
 
+        @on(PersonMessageReceived)
+        def person_message_received(inst, event: EventContext, **kwargs):
+            image_urls = []
+            text_message = ""
+            if Plain in kwargs['message_chain'] :
+                logging.debug("[rev] 包含文本")
+                text_message = str(kwargs['message_chain'])
+                if text_message.startswith('!') or text_message.startswith("！"):
+                    logging.debug("[rev] 是指令")
+                    return
+            if Image in kwargs['message_chain']:
+                images = kwargs['message_chain'][Image]
+                logging.debug("[rev] 包含" + str(len(images)) + "张图片")
+                for image in images :
+                    image_urls.append(image.url)
+                    logging.debug("[rev] 图片链接为:"+image.url)
+            if image_urls != [] :
+                if text_message == "" :
+                    for url in image_urls:
+                        text_message = text_message + url+'\n'
+                else :
+                    for url in image_urls:
+                        text_message = text_message.replace("[图片]", url+'\n')
+            reply_message = ""
+            try:
+                logging.debug("[rev] " + text_message)
+                reply_message = procmsg.process_message(session_name=kwargs['launcher_type']+"_"+str(kwargs['launcher_id']),
+                                                         prompt=text_message, **kwargs)
+
+                logging.debug("[rev] " + reply_message)
+
+                reply_message = reply_message
+            except Exception as e:
+                logging.error("[rev] " + traceback.format_exc())
+                import config
+                if config.hide_exce_info_to_user:
+                    reply_message = config.alter_tip_message
+                    host.notify_admin("[rev] 处理消息时出现错误:\n"+traceback.format_exc())
+                else:
+                    reply_message = "处理消息时出现错误，请联系管理员"+"\n"+traceback.format_exc()
+            if reply_message != "":
+                event.add_return(
+                    "reply",
+                    ["{}".format(revcfg.reply_prefix)+reply_message]
+                )
+
+            event.prevent_default()
+            event.prevent_postorder()
+
 
     def make_reply(self, prompt, **kwargs) -> dict:
         reply_gen = self.chatbot.ask(prompt, **kwargs)
