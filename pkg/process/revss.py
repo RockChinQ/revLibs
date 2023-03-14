@@ -62,6 +62,8 @@ class RevSession:
             self.__set_prompt__ = ""
             
         if dprompt_ != "" and self.conversation_id is None:
+            if type(dprompt_) == list:
+                dprompt_ = dprompt_[0]['content']
             prompt = dprompt_ +" \n"+ prompt
             logging.info("[rev] 使用情景预设: {}".format(dprompt_))
 
