@@ -37,68 +37,16 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
     while True:
         session: revss.RevSession = revss.get_session(session_name)
         try:
-            # 使用迭代器
-            if revcfg.blog_msg_strategy == "send_section":
-                section_count = 0
-                for section in session.get_reply(prompt):
-                    section_count += 1
-                    logging.info("分节回复: {}".format(section[:min(50, len(section))]))
-                    section = filter_process(section)
-                    if kwargs['launcher_type'] == 'group':
-                        host.send_group_message(kwargs['launcher_id'], "{}".format(revcfg.reply_prefix) + section)
-                    elif kwargs['launcher_type'] == 'person':
-                        host.send_person_message(kwargs['launcher_id'], "{}".format(revcfg.reply_prefix) + section)
+            if hasattr(revcfg, "blog_msg_strategy"):
+                logging.warning("[rev] 逆向库不再进行长消息处理，请使用主程序的长消息处理功能，详情请查看confi-template.py")
+            
+            all_reply = ""
 
-                if section_count > 1:
-                    reply_message = "<已发送完毕>"
-            elif revcfg.blog_msg_strategy == "forward_msg_component":
-                all_reply = ""
+            for section in session.get_reply(prompt):
+                all_reply += section
 
-                use_forward_msg_component = False
-                for section in session.get_reply(prompt):
-                    if all_reply != "":
-                        use_forward_msg_component = True
-                    all_reply += section
-
-                if len(all_reply) > revcfg.blog_msg_threshold:
-                    use_forward_msg_component = True
-
-                if use_forward_msg_component:
-                    import config
-
-                    logging.info("[rev] 回复{}消息：{}".format(session_name, all_reply[:min(50, len(all_reply))]))
-
-                    bot_uin = config.mirai_http_api_config['qq']
-
-                    all_reply = filter_process(all_reply)
-
-                    forward_msg_node = ForwardMessageNode(
-                        sender_id=bot_uin,
-                        sender_name="revLibs",
-                        message_chain=MessageChain([all_reply])
-                    )
-
-                    forward_msg_display = ForwardMessageDiaplay(
-                        title="群聊的聊天记录",
-                        brief="[聊天记录]",
-                        source="聊天记录",
-                        preview=[all_reply],
-                        summary="查看1条转发消息"
-                    )
-
-                    message_chain = Forward(
-                        display=forward_msg_display,
-                        node_list=[forward_msg_node]
-                    )
-
-                    if kwargs['launcher_type'] == 'group':
-                        host.send_group_message(kwargs['launcher_id'], message_chain)
-                    elif kwargs['launcher_type'] == 'person':
-                        host.send_person_message(kwargs['launcher_id'], message_chain)
-                else:
-                    # logging.info("[rev] 回复{}消息：{}".format(session_name, all_reply[:min(50, len(all_reply))]))
-                    all_reply = filter_process(all_reply)
-                    reply_message = all_reply
+            all_reply = filter_process(all_reply)
+            reply_message = all_reply
 
             break
         except Exception as e:
