@@ -105,7 +105,7 @@ class RevLibsPlugin(Plugin):
                 import config
                 if config.hide_exce_info_to_user:
                     reply_message = config.alter_tip_message
-                    host.notify_admin("[rev] 处理消息时出现错误:\n"+traceback.format_exc())
+                    kwargs['host'].notify_admin("[rev] 处理消息时出现错误:\n"+traceback.format_exc())
                 else:
                     reply_message = "处理消息时出现错误，请联系管理员"+"\n"+traceback.format_exc()
                 
