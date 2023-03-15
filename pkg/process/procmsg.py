@@ -6,8 +6,16 @@ from mirai import MessageChain
 from mirai.models.message import ForwardMessageNode
 from plugins.revLibs.pkg.models.forward import Forward, ForwardMessageDiaplay
 import traceback
+import pkg.utils.context as context
+import pkg.qqbot.manager as qqmgr
 
 __host__: PluginHost = None
+
+
+def filter_process(text: str) -> str:
+    qq_mgr = context.get_qqbot_manager()
+    assert type(qq_mgr) == qqmgr.QQBotManager
+    return qq_mgr.reply_filter.process(text)
 
 
 def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) -> str:
@@ -35,6 +43,7 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
                 for section in session.get_reply(prompt):
                     section_count += 1
                     logging.info("分节回复: {}".format(section[:min(50, len(section))]))
+                    section = filter_process(section)
                     if kwargs['launcher_type'] == 'group':
                         host.send_group_message(kwargs['launcher_id'], "{}".format(revcfg.reply_prefix) + section)
                     elif kwargs['launcher_type'] == 'person':
@@ -54,7 +63,11 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
                 if use_forward_msg_component:
                     import config
 
+                    logging.info("[rev] 回复{}消息：{}".format(session_name, all_reply[:min(50, len(all_reply))]))
+
                     bot_uin = config.mirai_http_api_config['qq']
+
+                    all_reply = filter_process(all_reply)
 
                     forward_msg_node = ForwardMessageNode(
                         sender_id=bot_uin,
@@ -75,14 +88,13 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
                         node_list=[forward_msg_node]
                     )
 
-                    logging.info("[rev] 回复{}消息：{}".format(session_name, all_reply[:min(50, len(all_reply))]))
-
                     if kwargs['launcher_type'] == 'group':
                         host.send_group_message(kwargs['launcher_id'], message_chain)
                     elif kwargs['launcher_type'] == 'person':
                         host.send_person_message(kwargs['launcher_id'], message_chain)
                 else:
                     # logging.info("[rev] 回复{}消息：{}".format(session_name, all_reply[:min(50, len(all_reply))]))
+                    all_reply = filter_process(all_reply)
                     reply_message = all_reply
 
             break

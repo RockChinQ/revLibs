@@ -1,5 +1,9 @@
 # RevLib Support for QChatGPT
 
+> 2023/3/15 OpenAI已开放使用GPT-4模型的ChatGPT，目前仅支持ChatGPT Plus账户使用，请使用`!plugin update`更新插件，查看`revcfg-template.py`的账户配置说明并修改`revcfg.py`文件。  
+> 2023/3/1 OpenAI官方开放了ChatGPT底层模型GPT-3.5的官方接口，但由于此接口和ChatGPT逆向接口的使用仍有区别，本插件项目仍会继续开发，并考虑接入[new bing](https://bing.com/chat)或[you.com](https://you.com)等平台的逆向接口；不变的是，本项目自始至终都只负责为QChatGPT接入不稳定的逆向库，官方的接口将由QChatGPT项目主线支持。
+
+
 得益于[QChatGPT项目](https://github.com/RockChinQ/QChatGPT)的插件功能，此插件将允许接入`ChatGPT网页版`用以替换原项目主线的GPT-3模型接口，提升回复质量。  
 [官方接口与ChatGPT网页版的区别？](https://github.com/RockChinQ/QChatGPT/wiki/%E5%AE%98%E6%96%B9%E6%8E%A5%E5%8F%A3%E4%B8%8EChatGPT%E7%BD%91%E9%A1%B5%E7%89%88)
 
