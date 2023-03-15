@@ -33,4 +33,36 @@
 到`QChatGPT`程序目录编辑`revcfg.py`文件，根据注释修改必填配置项。  
 配置完成后重新启动主程序以使用。
 
-### **❗注意：由于此接口响应较慢，请在主程序`config.py`中将`process_message_timeout`字段设置为300以上**
+## 更换逆向库
+
+目前支持的逆向库及使用方式如下:
+
+<details>
+<summary>ChatGPT网页版</summary>
+
+使用的是 [acheong08/ChatGPT](https://github.com/acheong08/ChatGPT)  
+本插件默认使用的逆向库，使用方法请参考上方文档及配置文件注释。
+
+</details>
+
+<details>
+<summary>New Bing</summary>
+
+使用的是 [acheong08/EdgeGPT](https://github.com/acheong08/EdgeGPT)  
+
+ - 修改`revcfg.py`中的`reverse_lib`为`acheong08/EdgeGPT`
+ - 安装适用于[Chrome/Edge](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm) 或 [Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/) 的Cookies编辑器插件
+ - 访问 `bing.com`
+ - 打开这个插件
+ - 点击 `Export` 按钮, 复制JSON格式的Cookies
+ - 在QChatGPT主程序`main.py`同目录下新建文件`cookies.json`, 将刚才复制的内容粘贴进去
+
+#### 配置
+
+new bing逆向库默认输出参考资料, 若不需要, 请在`revcfg.py`中设置:
+
+```python
+output_references = False
+```
+
+</details>

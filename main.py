@@ -59,13 +59,22 @@ class RevLibsPlugin(Plugin):
         import revcfg
 
         try:
-            import plugins.revLibs.pkg.process.impls.v1impl as v1impl
+            if revcfg.reverse_lib == "acheong08/ChatGPT.V1":
+                import plugins.revLibs.pkg.process.impls.v1impl as v1impl
 
-            v1implInst = v1impl.RevChatGPTV1
+                v1implInst = v1impl.RevChatGPTV1
 
-            import plugins.revLibs.pkg.process.revss as revss
-            revss.__rev_interface_impl_class__ = v1implInst
-            # plugin_host.notify_admin("[rev] 逆向库初始化成功")
+                import plugins.revLibs.pkg.process.revss as revss
+                revss.__rev_interface_impl_class__ = v1implInst
+                
+            elif revcfg.reverse_lib == "acheong08/EdgeGPT":
+                import plugins.revLibs.pkg.process.impls.edgegpt as edgegpt
+
+                edgegptInst = edgegpt.EdgeGPTImpl
+
+                import plugins.revLibs.pkg.process.revss as revss
+                revss.__rev_interface_impl_class__ = edgegptInst
+
             logging.info("[rev] 逆向库初始化成功")
         except:
             # 输出完整的错误信息

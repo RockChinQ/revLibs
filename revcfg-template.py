@@ -1,6 +1,7 @@
 # 选择使用的逆向库
 # 目前支持以下库：
 # - "acheong08/ChatGPT.V1": acheong08/ChatGPT库的V1版本
+# - "acheong08/EdgeGPT": acheong08/EdgeGPT库，接入new bing
 reverse_lib = "acheong08/ChatGPT.V1"
 
 # [必填][❗此说明很重要，请您认真阅读❗] OpenAI账户信息
@@ -48,6 +49,9 @@ openai_account = [
 # 账号重新恢复使用的时间间隔
 # 以分钟为单位
 openai_account_resume_interval = 60
+
+# 使用New Bing时是否显示参考资料
+output_references = True
 
 # 消息回复前缀
 # 建议保留此前缀，以便区分GPT-3和此插件的回复
