@@ -50,6 +50,7 @@
 
 使用的是 [acheong08/EdgeGPT](https://github.com/acheong08/EdgeGPT)  
 
+ - 确保您的微软账户已获得New Bing的测试资格
  - 修改`revcfg.py`中的`reverse_lib`为`acheong08/EdgeGPT`
  - 安装适用于[Chrome/Edge](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm) 或 [Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/) 的Cookies编辑器插件
  - 访问 `bing.com`
