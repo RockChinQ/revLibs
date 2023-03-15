@@ -50,6 +50,9 @@ openai_account = [
 # 以分钟为单位
 openai_account_resume_interval = 60
 
+# 使用New Bing时是否显示参考资料
+output_references = True
+
 # 消息回复前缀
 # 建议保留此前缀，以便区分GPT-3和此插件的回复
 reply_prefix = "[REV]"

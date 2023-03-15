@@ -60,6 +60,9 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
                         use_forward_msg_component = True
                     all_reply += section
 
+                if len(all_reply) > revcfg.blog_msg_threshold:
+                    use_forward_msg_component = True
+
                 if use_forward_msg_component:
                     import config
 

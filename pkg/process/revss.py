@@ -1,6 +1,7 @@
 # 逆向库的session
 from plugins.revLibs.pkg.models.interface import RevLibInterface
 from plugins.revLibs.pkg.process.impls.v1impl import RevChatGPTV1
+from plugins.revLibs.pkg.process.impls.edgegpt import EdgeGPTImpl
 import pkg.openai.dprompt as dprompt
 
 import logging
@@ -33,6 +34,10 @@ class RevSession:
             logging.debug("[rev] 逆向接口实现为RevChatGPTV1")
             self.__rev_interface_impl__, valid, acc = __rev_interface_impl_class__.create_instance()
             self.using_account = acc
+            self.reset()
+        elif __rev_interface_impl_class__ is EdgeGPTImpl:
+            logging.debug("[rev] 逆向接口实现为EdgeGPTImpl")
+            self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
             self.reset()
 
     def get_rev_lib_inst(self):
@@ -69,7 +74,8 @@ class RevSession:
 
         # 改成迭代器以支持回复分节
         for reply_period_msg, reply_period_dict in self.__rev_interface_impl__.get_reply(prompt, **kwargs):
-            self.conversation_id = reply_period_dict['conversation_id']
+            if __rev_interface_impl_class__ is RevChatGPTV1:
+                self.conversation_id = reply_period_dict['conversation_id']
                 
             yield reply_period_msg
 
