@@ -7,12 +7,15 @@ import threading
 
 __thr_locks__ = {}
 
+
 def get_lock(key: str):
     if key not in __thr_locks__:
         __thr_locks__[key] = threading.Lock()
     return __thr_locks__[key]
 
+
 import logging
+
 
 class RevChatGPTV1(RevLibInterface):
     """acheong08/ChatGPT的逆向库接口 V1"""
