@@ -68,6 +68,10 @@ class EdgeGPTImpl(RevLibInterface):
             body = re.sub(r"\[\^[0-9]+\^\]", "", body)
 
         reply_str = body + "\n\n" + ((refs_str + "\n\n") if index != 1 and (not hasattr(revcfg, "output_references") or revcfg.output_references) else "") + throttling_str
+        
+        if throttling["numUserMessagesInConversation"] == throttling["maxNumUserMessagesInConversation"]:
+            self.reset_chat()
+            throtting_str += "(已达最大次数，下一回合将开启新对话)"
         yield reply_str, resp
 
     def reset_chat(self):
