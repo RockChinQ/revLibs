@@ -70,3 +70,6 @@ output_references = False
 ```
 
 </details>
+<br/>
+
+### 🚫请勿修改`revcfg-template.py`的内容，配置项请在主程序`config.py`同目录的`revcfg.py`中修改🚫
