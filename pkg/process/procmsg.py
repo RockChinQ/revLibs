@@ -38,7 +38,7 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
         session: revss.RevSession = revss.get_session(session_name)
         try:
             if hasattr(revcfg, "blog_msg_strategy"):
-                logging.warning("[rev] 逆向库不再进行长消息处理，请使用主程序的长消息处理功能，详情请查看confi-template.py")
+                logging.warning("[rev] 逆向库不再进行长消息处理，请使用主程序的长消息处理功能，详情请查看主程序的config-template.py")
             
             all_reply = ""
 

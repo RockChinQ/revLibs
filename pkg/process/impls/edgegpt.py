@@ -51,28 +51,31 @@ class EdgeGPTImpl(RevLibInterface):
         reply_obj = resp["item"]["messages"][-1]
         body = reply_obj["text"]
 
-        refs_str = "参考资料: \n"
-        index = 1
-        for ref in reply_obj["sourceAttributions"]:
-            refs_str += "[^"+str(index)+"^] "+ref["providerDisplayName"]+": "+ref["seeMoreUrl"] + "\n"
-            index += 1
+        if "sourceAttributions" in reply_obj:
+            refs_str = "参考资料: \n"
+            index = 1
+            for ref in reply_obj["sourceAttributions"]:
+                refs_str += "[^"+str(index)+"^] "+ref["providerDisplayName"]+": "+ref["seeMoreUrl"] + "\n"
+                index += 1
 
-        throttling = resp["item"]["throttling"]
+            throttling = resp["item"]["throttling"]
 
-        throttling_str = "本次对话: {}/{}".format(throttling["numUserMessagesInConversation"], throttling["maxNumUserMessagesInConversation"])
-        
-        import revcfg
-        if hasattr(revcfg, "output_references") and not revcfg.output_references:
-            # 把正文的[^n^]替换成空
-            import re
-            body = re.sub(r"\[\^[0-9]+\^\]", "", body)
+            throttling_str = "本次对话: {}/{}".format(throttling["numUserMessagesInConversation"], throttling["maxNumUserMessagesInConversation"])
+            
+            import revcfg
+            if hasattr(revcfg, "output_references") and not revcfg.output_references:
+                # 把正文的[^n^]替换成空
+                import re
+                body = re.sub(r"\[\^[0-9]+\^\]", "", body)
 
-        reply_str = body + "\n\n" + ((refs_str + "\n\n") if index != 1 and (not hasattr(revcfg, "output_references") or revcfg.output_references) else "") + throttling_str
-        
-        if throttling["numUserMessagesInConversation"] == throttling["maxNumUserMessagesInConversation"]:
-            self.reset_chat()
-            throtting_str += "(已达最大次数，下一回合将开启新对话)"
-        yield reply_str, resp
+            reply_str = body + "\n\n" + ((refs_str + "\n\n") if index != 1 and (not hasattr(revcfg, "output_references") or revcfg.output_references) else "") + throttling_str
+            
+            if throttling["numUserMessagesInConversation"] == throttling["maxNumUserMessagesInConversation"]:
+                self.reset_chat()
+                throtting_str += "(已达最大次数，下一回合将开启新对话)"
+            yield reply_str, resp
+        else:
+            yield "err: 可能由于内容不当，对话已被接口拒绝，请输入 !reset 开启新的对话。", resp
 
     def reset_chat(self):
         asyncio.run(self.chatbot.reset())
