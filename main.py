@@ -3,6 +3,7 @@ import traceback
 from pkg.plugin.models import *
 from pkg.plugin.host import EventContext, PluginHost
 
+import time
 import os
 
 from revChatGPT.V1 import Chatbot
@@ -66,7 +67,7 @@ class RevLibsPlugin(Plugin):
 
                 import plugins.revLibs.pkg.process.revss as revss
                 revss.__rev_interface_impl_class__ = v1implInst
-                
+                logging.info("[rev] 已加载逆向库acheong08/ChatGPT.V1, 使用接口实现类: " + str(v1implInst))
             elif revcfg.reverse_lib == "acheong08/EdgeGPT":
                 import plugins.revLibs.pkg.process.impls.edgegpt as edgegpt
 
@@ -74,8 +75,11 @@ class RevLibsPlugin(Plugin):
 
                 import plugins.revLibs.pkg.process.revss as revss
                 revss.__rev_interface_impl_class__ = edgegptInst
-
-            logging.info("[rev] 逆向库初始化成功")
+                logging.info("[rev] 已加载逆向库acheong08/EdgeGPT, 使用接口实现类: " + str(edgegptInst))
+            else:
+                logging.error("[rev] 未知的逆向库: " + revcfg.reverse_lib + ", 请检查配置文件是否填写正确或尝试更新逆向库插件")
+                time.sleep(5)
+                return
         except:
             # 输出完整的错误信息
             # plugin_host.notify_admin("[rev] 逆向库初始化失败，请检查配置文件(revcfg.py)是否正确")
