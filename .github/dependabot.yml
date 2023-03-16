@@ -11,3 +11,4 @@ updates:
       interval: "daily"
     allow:
       - dependency-name: "revChatGPT"
+      - dependency-name: "EdgeGPT"
