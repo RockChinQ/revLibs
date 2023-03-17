@@ -3,6 +3,7 @@ from plugins.revLibs.pkg.models.interface import RevLibInterface
 from plugins.revLibs.pkg.process.impls.v1impl import RevChatGPTV1
 from plugins.revLibs.pkg.process.impls.edgegpt import EdgeGPTImpl
 import pkg.openai.dprompt as dprompt
+import uuid
 
 import logging
 
@@ -76,6 +77,8 @@ class RevSession:
         for reply_period_msg, reply_period_dict in self.__rev_interface_impl__.get_reply(prompt, **kwargs):
             if __rev_interface_impl_class__ is RevChatGPTV1:
                 self.conversation_id = reply_period_dict['conversation_id']
+            else:
+                self.conversation_id = uuid.uuid4().hex
                 
             yield reply_period_msg
 

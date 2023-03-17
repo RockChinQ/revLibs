@@ -44,6 +44,7 @@ class EdgeGPTImpl(RevLibInterface):
 
     def get_reply(self, prompt: str, **kwargs) -> tuple[str, dict]:
         """获取回复"""
+        logging.debug("[rev] 请求回复: {}".format(prompt))
         task = self.chatbot.ask(prompt, conversation_style=self.style)
         resp = asyncio.run(task)
         logging.debug(json.dumps(resp, indent=4, ensure_ascii=False))
@@ -68,11 +69,13 @@ class EdgeGPTImpl(RevLibInterface):
                 import re
                 body = re.sub(r"\[\^[0-9]+\^\]", "", body)
 
+            if throttling["numUserMessagesInConversation"] == 3:
+            # if throttling["numUserMessagesInConversation"] == throttling["maxNumUserMessagesInConversation"]:
+                self.reset_chat()
+                throttling_str += "(已达最大次数，下一回合将开启新对话)"
+
             reply_str = body + "\n\n" + ((refs_str + "\n\n") if index != 1 and (not hasattr(revcfg, "output_references") or revcfg.output_references) else "") + throttling_str
             
-            if throttling["numUserMessagesInConversation"] == throttling["maxNumUserMessagesInConversation"]:
-                self.reset_chat()
-                throtting_str += "(已达最大次数，下一回合将开启新对话)"
             yield reply_str, resp
         else:
             yield "err: 可能由于内容不当，对话已被接口拒绝，请输入 !reset 开启新的对话。", resp
