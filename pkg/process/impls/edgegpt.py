@@ -69,8 +69,8 @@ class EdgeGPTImpl(RevLibInterface):
                 import re
                 body = re.sub(r"\[\^[0-9]+\^\]", "", body)
 
-            if throttling["numUserMessagesInConversation"] == 3:
-            # if throttling["numUserMessagesInConversation"] == throttling["maxNumUserMessagesInConversation"]:
+            # if throttling["numUserMessagesInConversation"] == 3:
+            if throttling["numUserMessagesInConversation"] == throttling["maxNumUserMessagesInConversation"]:
                 self.reset_chat()
                 throttling_str += "(已达最大次数，下一回合将开启新对话)"
 
