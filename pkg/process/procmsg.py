@@ -12,12 +12,6 @@ import pkg.qqbot.manager as qqmgr
 __host__: PluginHost = None
 
 
-def filter_process(text: str) -> str:
-    qq_mgr = context.get_qqbot_manager()
-    assert type(qq_mgr) == qqmgr.QQBotManager
-    return qq_mgr.reply_filter.process(text)
-
-
 def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) -> str:
     """处理消息"""
     global __host__
@@ -45,7 +39,6 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
             for section in session.get_reply(prompt):
                 all_reply += section
 
-            all_reply = filter_process(all_reply)
             reply_message = all_reply
 
             break
