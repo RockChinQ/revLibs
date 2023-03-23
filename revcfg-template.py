@@ -60,6 +60,13 @@ openai_account = [
 # 以分钟为单位
 openai_account_resume_interval = 60
 
+# New Bing的Style
+# 请将此值设置为以下之一：
+# "h3imaginative"  有创意
+# "harmonyv3"      平衡
+# "h3precise"      精确
+new_bing_style = "harmonyv3"
+
 # 使用New Bing时是否显示参考资料
 output_references = True
 

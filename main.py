@@ -11,6 +11,7 @@ from revChatGPT.V1 import Chatbot
 import plugins.revLibs.pkg.process.revss as revss
 import plugins.revLibs.pkg.process.procmsg as procmsg
 import plugins.revLibs.pkg.process.proccmd as proccmd
+from EdgeGPT import ConversationStyle
 
 """
 接入ChatGPT的逆向库
@@ -58,6 +59,9 @@ class RevLibsPlugin(Plugin):
             return
 
         import revcfg
+
+        if not hasattr(revcfg, "new_bing_style"):
+            setattr(revcfg, "new_bing_style", ConversationStyle.balanced)
 
         try:
             if revcfg.reverse_lib == "acheong08/ChatGPT.V1":

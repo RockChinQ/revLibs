@@ -29,7 +29,9 @@ class EdgeGPTImpl(RevLibInterface):
         with open("cookies.json", "r", encoding="utf-8") as f:
             cookies_dict = json.load(f)
         
-        return EdgeGPTImpl(cookies_dict, ConversationStyle.creative), True, cookies_dict
+        import revcfg
+
+        return EdgeGPTImpl(cookies_dict, revcfg.new_bing_style if hasattr(revcfg, "new_bing_style") else ConversationStyle.balanced), True, cookies_dict
 
     def __init__(self, cookies, style):
         logging.debug("[rev] 初始化接口实现，使用账户cookies: {}".format(str(cookies)[:30]))
