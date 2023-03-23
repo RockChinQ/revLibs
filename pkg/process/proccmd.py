@@ -1,4 +1,7 @@
 import plugins.revLibs.pkg.process.revss as revss
+import plugins.revLibs.pkg.process.impls.v1impl as v1impl
+import plugins.revLibs.pkg.process.impls.edgegpt as edgegpt
+
 
 def process_command(session_name: str, **kwargs) -> str:
     """处理命令"""
@@ -52,26 +55,58 @@ def process_command(session_name: str, **kwargs) -> str:
         """查看每个账户的使用情况"""
         import plugins.revLibs.pkg.accounts.accmgr as accmgr
 
-        reply_message = "账户列表:\n"
+        if revss.__rev_interface_impl_class__ == v1impl.RevInterfaceImplV1:
 
-        for account in accmgr.get_account_list():
-            """
-                - 账户名称
-            """
-            reply_message += "账户: {}\n  - ".format(accmgr.get_account_brief_name(account))
+            reply_message = "账户列表:\n"
 
-            using = False
-            for k in revss.__sessions__:
-                v: revss.RevSession = revss.__sessions__[k]
-                if accmgr.get_account_brief_name(v.using_account) == accmgr.get_account_brief_name(account):
-                    reply_message += v.name + ", "
-                    using = True
-            if not using:
-                reply_message += "未使用"
+            for account in accmgr.get_account_list():
+                """
+                    - 账户名称
+                """
+                reply_message += "账户: {}\n  - ".format(accmgr.get_account_brief_name(account))
+
+                using = False
+                for k in revss.__sessions__:
+                    v: revss.RevSession = revss.__sessions__[k]
+                    if accmgr.get_account_brief_name(v.using_account) == accmgr.get_account_brief_name(account):
+                        reply_message += v.name + ", "
+                        using = True
+                if not using:
+                    reply_message += "未使用"
+                else:
+                    reply_message = reply_message[:-2]
+
+                reply_message += "\n\n"
+            reply_message = reply_message[:-1]
+        else:
+            reply_message = "仅当使用ChatGPT逆向库时可查看账户负载情况"
+    elif cmd == "style":
+        if revss.__rev_interface_impl_class__ == edgegpt.EdgeGPTImpl:
+            import revcfg
+            from EdgeGPT import ConversationStyle
+            if len(params) >= 1:
+
+                mapping = {
+                    "创意": ConversationStyle.creative,
+                    "平衡": ConversationStyle.balanced,
+                    "精确": ConversationStyle.precise,
+                }
+
+                if params[0] not in mapping:
+                    reply_message = "风格参数错误，可选参数: 创意, 平衡, 精确"
+                    return reply_message
+
+                setattr(revcfg, "new_bing_style", mapping[params[0]])
+
+                reply_message = "已切换到{}风格，重置会话后生效".format(params[0])
             else:
-                reply_message = reply_message[:-2]
-
-            reply_message += "\n\n"
-        reply_message = reply_message[:-1]
+                current = "创意"
+                if getattr(revcfg, "new_bing_style") == ConversationStyle.balanced:
+                    current = "平衡"
+                elif getattr(revcfg, "new_bing_style") == ConversationStyle.precise:
+                    current = "精确"
+                reply_message = "当前风格为: {}，可选参数: 创意, 平衡, 精确\n例如: !style 创意".format(current)
+        else:
+            reply_message = "仅当使用New Bing逆向库时可切换风格"
 
     return reply_message
