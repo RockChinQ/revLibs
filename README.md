@@ -41,8 +41,6 @@
 <details>
 <summary>ChatGPT网页版</summary>
 
-> ⚠️ 警告: 2023/03/15 开始 - OpenAI 封禁了很多使用 [逆向库V1](https://github.com/acheong08/ChatGPT/issues/1158) 的账号。 目前不建议再使用此逆向库, 请切换到 GPT-3.5官方接口、New Bing等更加稳定的访问方式; 本项目支持的所有模型, 请查看[主程序文档](https://github.com/RockChinQ/QChatGPT#%E6%A8%A1%E5%9E%8B%E9%80%82%E9%85%8D%E4%B8%80%E8%A7%88)
-
 使用的是 [acheong08/ChatGPT](https://github.com/acheong08/ChatGPT)  
 本插件默认使用的逆向库，使用方法请参考上方文档及配置文件注释。
 
