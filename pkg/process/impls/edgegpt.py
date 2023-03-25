@@ -14,7 +14,7 @@ class EdgeGPTImpl(RevLibInterface):
     """
     chatbot: Chatbot = None
 
-    style = ConversationStyle.creative
+    style = ConversationStyle.balanced
 
     inst_name: str
 
@@ -80,7 +80,8 @@ class EdgeGPTImpl(RevLibInterface):
             
             yield reply_str, resp
         else:
-            yield "err: 可能由于内容不当，对话已被接口拒绝，请输入 !reset 开启新的对话。", resp
+            self.reset_chat()
+            yield "err: 可能由于内容不当，对话已被接口拒绝，下一回合将开启新的会话。", resp
 
     def reset_chat(self):
         asyncio.run(self.chatbot.reset())
