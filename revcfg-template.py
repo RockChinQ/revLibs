@@ -1,3 +1,4 @@
+from EdgeGPT import ConversationStyle
 # 选择使用的逆向库
 # 目前支持以下库：
 # - "acheong08/ChatGPT.V1": acheong08/ChatGPT库的V1版本
@@ -62,10 +63,10 @@ openai_account_resume_interval = 60
 
 # New Bing的Style
 # 请将此值设置为以下之一：
-# "h3imaginative"  有创意
-# "harmonyv3"      平衡
-# "h3precise"      精确
-new_bing_style = "harmonyv3"
+# ConversationStyle.creative     有创意
+# ConversationStyle.balanced     平衡
+# ConversationStyle.precise      精确
+new_bing_style = ConversationStyle.balanced
 
 # 使用New Bing时是否显示参考资料
 output_references = True
