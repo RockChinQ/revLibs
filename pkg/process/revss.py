@@ -4,8 +4,11 @@ from plugins.revLibs.pkg.process.impls.v1impl import RevChatGPTV1
 from plugins.revLibs.pkg.process.impls.edgegpt import EdgeGPTImpl
 import pkg.openai.dprompt as dprompt
 import uuid
+import time
 
 import logging
+
+import config
 
 __sessions__ = {}
 """所有session"""
@@ -29,6 +32,11 @@ class RevSession:
 
     using_account: dict = None
 
+    last_interaction_time: int = 0
+    """最后一次交互时间"""
+
+    getting_reply: bool = False
+
     def __init__(self, name: str):
         self.name = name
         if __rev_interface_impl_class__ is RevChatGPTV1:
@@ -41,26 +49,32 @@ class RevSession:
             self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
             self.reset()
 
+    def check_expire_loop(self):
+        while True:
+            time.sleep(60)
+            if self not in __sessions__.values():
+                break
+            if self.last_interaction_time < int(time.time()) - config.session_expire_time and not self.getting_reply:
+                # 删除此session
+                logging.info("[rev] 会话 {} 已过期，删除".format(self.name))
+                del __sessions__[self.name]
+                break
+
     def get_rev_lib_inst(self):
         return self.__rev_interface_impl__.get_rev_lib_inst()
 
     def get_reply(self, prompt: str, **kwargs) -> str:
         """获取回复"""
+        self.getting_reply = True
+
         if self.__rev_interface_impl__ is None:
             raise Exception("逆向接口未初始化")
+
+        self.last_interaction_time = int(time.time())
         
         self.__ls_prompt__ = prompt
         if self.conversation_id is not None:
             kwargs['conversation_id'] = self.conversation_id
-        # else :
-        #     logging.info("[rev] 会话id为空，将会创建新会话")
-        #     #获取预设场景
-        #     dprompt_ = dprompt.get_prompt(dprompt.get_current())
-        #     logging.info("[rev] 使用情景预设: {}".format(dprompt_))
-        #     for msg_, reply_period_dict in self.__rev_interface_impl__.get_reply(dprompt_, **kwargs):
-        #         self.conversation_id = reply_period_dict['conversation_id']
-        #     if self.conversation_id is not None:
-        #         kwargs['conversation_id'] = self.conversation_id
         
         dprompt_ = dprompt.get_prompt(dprompt.get_current())
         if self.__set_prompt__ != "":
@@ -81,6 +95,8 @@ class RevSession:
                 self.conversation_id = uuid.uuid4().hex
                 
             yield reply_period_msg
+        
+        self.getting_reply = False
 
     def reset(self, using_prompt_name: str = None) -> str:
         """重置会话"""
