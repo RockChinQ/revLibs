@@ -76,7 +76,8 @@ class RevSession:
         if self.conversation_id is not None:
             kwargs['conversation_id'] = self.conversation_id
         
-        dprompt_ = dprompt.get_prompt(dprompt.get_current())
+        using_name = dprompt.mode_inst().get_using_name()
+        dprompt_, _ = dprompt.mode_inst().get_prompt(using_name)
         if self.__set_prompt__ != "":
             dprompt_ = self.__set_prompt__
             self.__set_prompt__ = ""
