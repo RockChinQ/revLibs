@@ -7,6 +7,7 @@ import uuid
 import time
 
 import logging
+import threading
 
 import config
 
@@ -49,6 +50,9 @@ class RevSession:
             self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
             self.reset()
 
+        threading.Thread(target=self.check_expire_loop, daemon=True).start()
+
+
     def check_expire_loop(self):
         while True:
             time.sleep(60)
@@ -56,7 +60,7 @@ class RevSession:
                 break
             if self.last_interaction_time < int(time.time()) - config.session_expire_time and not self.getting_reply:
                 # 删除此session
-                logging.info("[rev] 会话 {} 已过期，删除".format(self.name))
+                logging.info("[rev] 会话 {} 已过期，自动重置".format(self.name))
                 del __sessions__[self.name]
                 break
 
