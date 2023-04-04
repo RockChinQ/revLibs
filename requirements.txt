@@ -1,2 +1,2 @@
 revChatGPT~=4.0.11
-EdgeGPT~=0.1.12
+EdgeGPT~=0.1.22
