@@ -135,22 +135,17 @@ class RevLibsPlugin(Plugin):
                                                         **kwargs)
 
                 logging.debug("[rev] " + reply_message)
+            except Exception as e:
+                logging.error("[rev] " + traceback.format_exc())
+                reply_message = "处理命令时出现错误，请联系管理员"+"\n"+traceback.format_exc()
+            
+            if reply_message.strip() != "":
                 event.add_return(
                     "reply",
                     ["{}(cmd)".format(revcfg.reply_prefix)+reply_message],
                 )
-            except Exception as e:
-                logging.error("[rev] " + traceback.format_exc())
-                reply_message = "处理命令时出现错误，请联系管理员"+"\n"+traceback.format_exc()
-                event.add_return(
-                    "reply",
-                    ["{}(cmd)".format(revcfg.reply_prefix)+"处理命令时出现错误，请联系管理员"+"\n"+traceback.format_exc()],
-                )
-            
-            if reply_message != "":
                 event.prevent_default()
                 event.prevent_postorder()
-
 
     def make_reply(self, prompt, **kwargs) -> dict:
         reply_gen = self.chatbot.ask(prompt, **kwargs)
