@@ -63,7 +63,7 @@ class RevChatGPTV1(RevLibInterface):
                     reply['message'] = reply['message'].replace(already_reply_msg, "")
 
                 # 判断是否达到分节长度
-                if "message" in reply and len(reply['message']) >= revcfg.blog_msg_threshold:
+                if "message" in reply and len(reply['message']) >= 64:
                     yield reply['message'], reply
                     already_reply_msg += reply['message']
                     reply = {}
