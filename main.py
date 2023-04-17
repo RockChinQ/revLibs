@@ -112,7 +112,16 @@ class RevLibsPlugin(Plugin):
                 logging.error("[rev] " + traceback.format_exc())
                 import config
                 if config.hide_exce_info_to_user:
-                    reply_message = config.alter_tip_message
+                    reply_message = ''
+                    try:
+                        import tips
+                        reply_message = tips.alter_tip_message
+                    except:
+                        if hasattr(config, "alter_tip_message"):
+                            reply_message = config.alter_tip_message
+                        else:
+                            reply_message = "处理消息时出现错误，请联系管理员"
+
                     kwargs['host'].notify_admin("[rev] 处理消息时出现错误:\n"+traceback.format_exc())
                 else:
                     reply_message = "处理消息时出现错误，请联系管理员"+"\n"+traceback.format_exc()
