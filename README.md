@@ -41,9 +41,8 @@
 <details>
 <summary>ChatGPT网页版</summary>
 
+本插件默认使用的逆向库，使用方法请参考上方文档及配置文件注释。  
 使用的是 [acheong08/ChatGPT](https://github.com/acheong08/ChatGPT)  
-本插件默认使用的逆向库，使用方法请参考上方文档及配置文件注释。
-
 </details>
 
 <details>
