@@ -9,6 +9,9 @@ from plugins.revLibs.pkg.models.interface import RevLibInterface
 from EdgeGPT import Chatbot, ConversationStyle
 
 
+ref_num_loop = ['¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹', '¹⁰', '¹¹', '¹²', '¹³', '¹⁴', '¹⁵', '¹⁶', '¹⁷', '¹⁸', '¹⁹', '²⁰']
+
+
 class EdgeGPTImpl(RevLibInterface):
     """使用acheong08/EdgeGPT接入new bing
     """
@@ -51,7 +54,7 @@ class EdgeGPTImpl(RevLibInterface):
         resp = asyncio.run(task)
         logging.debug(json.dumps(resp, indent=4, ensure_ascii=False))
 
-        reply_obj = resp["item"]["messages"][-1]
+        reply_obj = resp["item"]["messages"][-1] if 'messageType' not in resp["item"]["messages"][-1] else resp["item"]["messages"][-2]
         body = reply_obj["text"] if "text" in reply_obj else (
             reply_obj['hiddenText'] if "hiddenText" in reply_obj else (
                 reply_obj['spokenText'] if "spokenText" in reply_obj else ""
@@ -62,7 +65,7 @@ class EdgeGPTImpl(RevLibInterface):
             refs_str = "参考资料: \n"
             index = 1
             for ref in reply_obj["sourceAttributions"]:
-                refs_str += "[^"+str(index)+"^] "+ref["providerDisplayName"]+": "+ref["seeMoreUrl"] + "\n"
+                refs_str += "{}".format(ref_num_loop[index-1]) + " " + ref['seeMoreUrl'] + " | " + ref['providerDisplayName'] + "\n"
                 index += 1
 
             throttling = resp["item"]["throttling"]
@@ -74,6 +77,10 @@ class EdgeGPTImpl(RevLibInterface):
                 # 把正文的[^n^]替换成空
                 import re
                 body = re.sub(r"\[\^[0-9]+\^\]", "", body)
+            else:
+                # 把正文的[^n^]替换成对应的序号
+                for i in range(index):
+                    body = body.replace("[^"+str(i+1)+"^]", ref_num_loop[i])
 
             # if throttling["numUserMessagesInConversation"] == 3:
             if throttling["numUserMessagesInConversation"] == throttling["maxNumUserMessagesInConversation"]:
