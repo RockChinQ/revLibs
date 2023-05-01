@@ -52,7 +52,11 @@ class EdgeGPTImpl(RevLibInterface):
         logging.debug(json.dumps(resp, indent=4, ensure_ascii=False))
 
         reply_obj = resp["item"]["messages"][-1]
-        body = reply_obj["text"]
+        body = reply_obj["text"] if "text" in reply_obj else (
+            reply_obj['hiddenText'] if "hiddenText" in reply_obj else (
+                reply_obj['spokenText'] if "spokenText" in reply_obj else ""
+            )
+        )
 
         if "sourceAttributions" in reply_obj:
             refs_str = "参考资料: \n"

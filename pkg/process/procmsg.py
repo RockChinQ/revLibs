@@ -51,6 +51,7 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
 
             if fail_times < revcfg.retry_when_fail:
                 fail_times += 1
+                logging.error(traceback.format_exc())
                 logging.warn("失败，重试({}/{})...".format(fail_times, revcfg.retry_when_fail))
                 time.sleep(2)
                 continue
