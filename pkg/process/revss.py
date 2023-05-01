@@ -86,7 +86,7 @@ class RevSession:
             dprompt_ = self.__set_prompt__
             self.__set_prompt__ = ""
             
-        if dprompt_ != "" and self.conversation_id is None:
+        if dprompt_ != "" and self.conversation_id is None and __rev_interface_impl_class__ is not EdgeGPTImpl:  # new bing不使用情景预设
             if type(dprompt_) == list:
                 dprompt_ = dprompt_[0]['content']
             prompt = dprompt_ +" \n"+ prompt
