@@ -65,7 +65,7 @@ class EdgeGPTImpl(RevLibInterface):
             refs_str = "参考资料: \n"
             index = 1
             for ref in reply_obj["sourceAttributions"]:
-                refs_str += "{}".format(ref_num_loop[index-1]) + " " + ref['seeMoreUrl'] + " | " + ref['providerDisplayName'] + "\n"
+                refs_str += "{}".format(ref_num_loop[index-1]) + " " + ref['providerDisplayName'] + " | " + ref['seeMoreUrl'] + "\n"
                 index += 1
 
             throttling = resp["item"]["throttling"]
