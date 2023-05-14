@@ -75,7 +75,9 @@ output_references = False
 
 <details>
 <summary>HuggingChat</summary>
+
 使用最新版本revLibs插件，在`revcfg.py`中修改`reverse_lib`的值为`Soulter/hugging-chat-api`即可使用
+
 </details>
 <br/>
 
