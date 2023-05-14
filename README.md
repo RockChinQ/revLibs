@@ -1,9 +1,9 @@
 # RevLib Support for QChatGPT
 
+> 2023/5/14 已支持通过[Soulter/hugging-chat-api](https://github.com/Soulter/hugging-chat-api)接入[HuggingChat](https://huggingface.co/chat/)
 > 2023/5/1  不再向New Bing发送情景预设，以防止被拒绝回复。  
 > 2023/3/15 现已支持New Bing，请查看下方使用方法。  
 > 2023/3/15 OpenAI已开放使用GPT-4模型的ChatGPT，目前仅支持ChatGPT Plus账户使用，请使用`!plugin update`更新插件，查看`revcfg-template.py`的账户配置说明并修改`revcfg.py`文件。  
-> 2023/3/1 OpenAI官方开放了ChatGPT底层模型GPT-3.5的官方接口，但由于此接口和ChatGPT逆向接口的使用仍有区别，本插件项目仍会继续开发，并考虑接入[new bing](https://bing.com/chat)或[you.com](https://you.com)等平台的逆向接口；不变的是，本项目自始至终都只负责为QChatGPT接入不稳定的逆向库，官方的接口将由QChatGPT项目主线支持。
 
 
 得益于[QChatGPT项目](https://github.com/RockChinQ/QChatGPT)的插件功能，此插件将允许接入`ChatGPT网页版`用以替换原项目主线的GPT-3模型接口，提升回复质量。  
@@ -71,6 +71,11 @@ output_references = False
 
 查看revcfg.py中的`new_bing_style`字段，按照说明更改。在运行期间可以通过指令`!style <风格（创意、平衡、精确）>`来更改风格。
 
+</details>
+
+<details>
+<summary>HuggingChat</summary>
+使用最新版本revLibs插件，在`revcfg.py`中修改`reverse_lib`的值为`Soulter/hugging-chat-api`即可使用
 </details>
 <br/>
 
