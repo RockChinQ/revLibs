@@ -80,6 +80,14 @@ class RevLibsPlugin(Plugin):
                 import plugins.revLibs.pkg.process.revss as revss
                 revss.__rev_interface_impl_class__ = edgegptInst
                 logging.info("[rev] 已加载逆向库acheong08/EdgeGPT, 使用接口实现类: " + str(edgegptInst))
+            elif revcfg.reverse_lib == "Soulter/hugging-chat-api":
+                import plugins.revLibs.pkg.process.impls.hugchat as hugchat
+
+                hugchatInst = hugchat.HugChatImpl
+
+                import plugins.revLibs.pkg.process.revss as revss
+                revss.__rev_interface_impl_class__ = hugchatInst
+                logging.info("[rev] 已加载逆向库Soulter/hugging-chat-api, 使用接口实现类: " + str(hugchatInst))
             else:
                 logging.error("[rev] 未知的逆向库: " + revcfg.reverse_lib + ", 请检查配置文件是否填写正确或尝试更新逆向库插件")
                 time.sleep(5)

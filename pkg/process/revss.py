@@ -2,6 +2,7 @@
 from plugins.revLibs.pkg.models.interface import RevLibInterface
 from plugins.revLibs.pkg.process.impls.v1impl import RevChatGPTV1
 from plugins.revLibs.pkg.process.impls.edgegpt import EdgeGPTImpl
+from plugins.revLibs.pkg.process.impls.hugchat import HugChatImpl
 import pkg.openai.dprompt as dprompt
 import uuid
 import time
@@ -47,6 +48,10 @@ class RevSession:
             self.reset()
         elif __rev_interface_impl_class__ is EdgeGPTImpl:
             logging.debug("[rev] 逆向接口实现为EdgeGPTImpl")
+            self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
+            self.reset()
+        elif __rev_interface_impl_class__ is HugChatImpl:
+            logging.debug("[rev] 逆向接口实现为HugChatImpl")
             self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
             self.reset()
 

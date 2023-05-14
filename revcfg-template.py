@@ -3,6 +3,7 @@ from EdgeGPT import ConversationStyle
 # 目前支持以下库：
 # - "acheong08/ChatGPT.V1": acheong08/ChatGPT库的V1版本
 # - "acheong08/EdgeGPT": acheong08/EdgeGPT库，接入new bing
+# - "Soulter/hugging-chat-api": Soulter/hugging-chat-api库，接入hugging chat，无需登录任何账号
 reverse_lib = "acheong08/ChatGPT.V1"
 
 # [必填][❗此说明很重要，请您认真阅读❗] OpenAI账户信息
