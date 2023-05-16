@@ -7,8 +7,12 @@ from EdgeGPT import ConversationStyle
 reverse_lib = "acheong08/ChatGPT.V1"
 
 # [必填][❗此说明很重要，请您认真阅读❗] OpenAI账户信息
-# 目前支持三种登录方式：账号密码登录、SessionToken登录、accessToken登录
-# 1.适用于默认的注册方式得到的账号，2.适用于使用Google/Microsoft账号登录的账号，3.适用于中国大陆主机
+# *仅使用acheong08/ChatGPT.V1时填写
+# 目前支持三种登录方式：
+# - 账号密码登录(仅支持ChatGPT Plus账号)
+# - SessionToken登录(仅Microsoft、Google账号注册的账号)
+# - accessToken登录(普通账号请使用此方法登录)
+#
 # 以下默认使用账户密码方式登录。
 #
 # *若要使用SessionToken登录方式，请删掉email和password参数，添加session_token参数：
@@ -31,8 +35,7 @@ reverse_lib = "acheong08/ChatGPT.V1"
 # 可选参数填写格式示例:
 # openai_account = [
 #   {
-#     "email": "your email",
-#     "password": "your password",
+#     "access_token": "your access_token",
 #     "proxy": "https://localhost:1080",
 #     "paid": True,
 #     "model": "gpt-4"
@@ -42,19 +45,16 @@ reverse_lib = "acheong08/ChatGPT.V1"
 # **若要使用多个账户均衡负载，可以以列表的形式添加多个账户信息，例如：
 # openai_account = [
 #   {
-#     "email": "your email",
-#     "password": "your password"
+#     "access_token": "your access_token",
 #   },
 #   {
-#     "email": "your email",
-#     "password": "your password"
+#     "access_token": "your access_token",
 #   }
 # ]
 # 其中每个账户的格式符合前文所述的格式
 openai_account = [
     {
-        "email": "your email",  # 账户邮箱
-        "password": "your password",  # 账户密码
+        "access_token": "your access_token",
     }
 ]
 
