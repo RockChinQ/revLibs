@@ -13,7 +13,11 @@ reverse_lib = "acheong08/ChatGPT.V1"
 # - SessionToken登录(仅Microsoft、Google账号注册的账号)
 # - accessToken登录(普通账号请使用此方法登录)
 #
-# 以下默认使用账户密码方式登录。
+# *账号密码登录方式，例如：
+# openai_account = {
+#   "email": "your email",
+#   "password": "your password"
+# }
 #
 # *若要使用SessionToken登录方式，请删掉email和password参数，添加session_token参数：
 # 例如：
