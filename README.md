@@ -76,7 +76,12 @@ output_references = False
 <details>
 <summary>HuggingChat</summary>
 
-使用最新版本revLibs插件，在`revcfg.py`中修改`reverse_lib`的值为`Soulter/hugging-chat-api`即可使用
+1. 在`revcfg.py`中修改`reverse_lib`的值为`Soulter/hugging-chat-api`
+2. 安装适用于[Chrome/Edge](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm) 或 [Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/) 的Cookies编辑器插件
+3. 访问 `huggingface.co/chat`
+4. 打开这个插件
+5. 点击 `Export` 按钮, 复制JSON格式的Cookies
+6. 在QChatGPT主程序`main.py`同目录下新建文件`hugchat.json`, 将刚才复制的内容粘贴进去
 
 </details>
 <br/>
