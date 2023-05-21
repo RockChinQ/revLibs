@@ -22,23 +22,15 @@ class EdgeGPTImpl(RevLibInterface):
     inst_name: str
 
     @staticmethod
-    def create_instance() -> tuple[RevLibInterface, bool, dict]:
-        # 检查new bing的cookies是否存在
-        if not os.path.exists("cookies.json"):
-            logging.error("new bing cookies不存在")
-            raise Exception("new bing cookies不存在, 请根据文档进行配置")
-        
-        cookies_dict = {}
-        with open("cookies.json", "r", encoding="utf-8") as f:
-            cookies_dict = json.load(f)
-        
+    def create_instance() -> tuple[RevLibInterface, bool]:
         import revcfg
 
-        return EdgeGPTImpl(cookies_dict, revcfg.new_bing_style if hasattr(revcfg, "new_bing_style") else ConversationStyle.balanced), True, cookies_dict
+        return EdgeGPTImpl(revcfg.new_bing_style if hasattr(revcfg, "new_bing_style") else ConversationStyle.balanced), True
 
-    def __init__(self, cookies, style):
-        logging.debug("[rev] 初始化接口实现，使用账户cookies: {}".format(str(cookies)[:30]))
-        self.chatbot = Chatbot(cookies=cookies)
+    def __init__(self, style):
+        # logging.debug("[rev] 初始化接口实现，使用账户cookies: {}".format(str(cookies)[:30]))
+        logging.debug("[rev] 初始化New Bing接口实现")
+        self.chatbot = Chatbot()
         self.style = style
         # 随机一个uuid作为实例名
         import uuid
