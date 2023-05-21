@@ -30,7 +30,13 @@ class EdgeGPTImpl(RevLibInterface):
     def __init__(self, style):
         # logging.debug("[rev] 初始化接口实现，使用账户cookies: {}".format(str(cookies)[:30]))
         logging.debug("[rev] 初始化New Bing接口实现")
-        self.chatbot = Chatbot()
+        import revcfg
+        if hasattr(revcfg, "new_bing_proxy"):
+            self.chatbot = Chatbot(
+                proxy=revcfg.new_bing_proxy,
+            )
+        else:
+            self.chatbot = Chatbot()
         self.style = style
         # 随机一个uuid作为实例名
         import uuid

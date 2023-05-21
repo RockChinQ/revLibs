@@ -66,6 +66,11 @@ openai_account = [
 # 以分钟为单位
 openai_account_resume_interval = 60
 
+# New Bing的代理地址
+# 参考config.py中openai的代理地址
+# 若为None则不使用代理
+new_bing_proxy = None
+
 # New Bing的Style
 # 请将此值设置为以下之一：
 # ConversationStyle.creative     有创意
