@@ -42,6 +42,7 @@ class RevChatGPTV1(RevLibInterface):
 
     def get_reply(self, prompt: str, **kwargs) -> Tuple[str, dict]:
         import revcfg
+        logging.debug("[rev] 请求ChatGPT回复: {}".format(prompt))
         try:
             get_lock(self.inst_name).acquire()
             if self.chatbot is None:

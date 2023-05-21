@@ -41,7 +41,7 @@ class EdgeGPTImpl(RevLibInterface):
 
     def get_reply(self, prompt: str, **kwargs) -> tuple[str, dict]:
         """获取回复"""
-        logging.debug("[rev] 请求回复: {}".format(prompt))
+        logging.debug("[rev] 请求bing回复: {}".format(prompt))
         task = self.chatbot.ask(prompt, conversation_style=self.style)
         resp = asyncio.run(task)
         logging.debug(json.dumps(resp, indent=4, ensure_ascii=False))

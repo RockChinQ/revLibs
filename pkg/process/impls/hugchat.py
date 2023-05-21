@@ -33,7 +33,7 @@ class HugChatImpl(RevLibInterface):
         return self.chatbot
 
     def get_reply(self, prompt: str, **kwargs) -> Tuple[str, dict]:
-        logging.debug("[rev] 请求回复: {}".format(prompt))
+        logging.debug("[rev] 请求hugchat回复: {}".format(prompt))
 
         resp = self.chatbot.chat(prompt)
 
