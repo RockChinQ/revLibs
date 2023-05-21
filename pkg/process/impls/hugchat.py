@@ -5,6 +5,9 @@ from plugins.revLibs.pkg.models.interface import RevLibInterface
 
 from hugchat import hugchat
 
+import os
+import json
+
 
 class HugChatImpl(RevLibInterface):
 
@@ -13,10 +16,18 @@ class HugChatImpl(RevLibInterface):
     @staticmethod
     def create_instance() -> tuple[RevLibInterface, bool, dict]:
         import revcfg
-        return HugChatImpl(), True, {}
+        # 检查hugging chat的cookies是否存在
+        if not os.path.exists("hugchat.json"):
+            logging.error("HuggingChat cookies不存在")
+            raise Exception("HuggingChat cookies不存在, 请根据文档进行配置: https://github.com/RockChinQ/revLibs")
+        
+        cookies_dict = {}
+        with open("hugchat.json", "r", encoding="utf-8") as f:
+            cookies_dict = json.load(f)
+        return HugChatImpl(cookies_dict), True, cookies_dict
 
-    def __init__(self):
-        self.chatbot = hugchat.ChatBot()
+    def __init__(self, cookies_dict: dict = None):
+        self.chatbot = hugchat.ChatBot(cookies=cookies_dict)
 
     def get_rev_lib_inst(self):
         return self.chatbot
