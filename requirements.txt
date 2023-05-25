@@ -1,3 +1,3 @@
-revChatGPT~=5.1.1
+revChatGPT~=5.1.2
 EdgeGPT~=0.6.3
 hugchat
