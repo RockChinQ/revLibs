@@ -94,7 +94,8 @@ class RevSession:
         if dprompt_ != "" and self.conversation_id is None and __rev_interface_impl_class__ is not EdgeGPTImpl:  # new bing不使用情景预设
             if type(dprompt_) == list:
                 dprompt_ = dprompt_[0]['content']
-            prompt = dprompt_ +" \n"+ prompt
+            # prompt = dprompt_ +" \n"+ prompt
+            prompt = f"{dprompt_} \n{prompt}"
             logging.info("[rev] 使用情景预设: {}".format(dprompt_))
 
         # 改成迭代器以支持回复分节
@@ -115,11 +116,11 @@ class RevSession:
         self.__ls_prompt__ = ""
         self.__rev_interface_impl__.reset_chat()
         if using_prompt_name is not None:
-            for key in dprompt.get_prompt_dict():
+            for key in dprompt.mode_inst().list():
                 if key.startswith(using_prompt_name):
                     using_prompt_name = key
                     break
-            self.__set_prompt__ = dprompt.get_prompt(using_prompt_name)
+            self.__set_prompt__ = dprompt.mode_inst().get_prompt(using_prompt_name)
             return using_prompt_name
 
     def resend(self):
