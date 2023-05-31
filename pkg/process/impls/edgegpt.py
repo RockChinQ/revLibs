@@ -31,12 +31,21 @@ class EdgeGPTImpl(RevLibInterface):
         # logging.debug("[rev] 初始化接口实现，使用账户cookies: {}".format(str(cookies)[:30]))
         logging.debug("[rev] 初始化New Bing接口实现")
         import revcfg
+
+        params = {}
+
         if hasattr(revcfg, "new_bing_proxy"):
-            self.chatbot = Chatbot(
-                proxy=revcfg.new_bing_proxy,
-            )
-        else:
-            self.chatbot = Chatbot()
+            params["proxy"] = revcfg.new_bing_proxy
+            logging.info("[rev] 初始化NewBing使用代理: {}".format(revcfg.new_bing_proxy))
+
+        if os.path.exists("cookies.json"):
+            with open("cookies.json", "r") as f:
+                cookies_list = json.load(f)
+            params["cookies"] = cookies_list
+            logging.info("[rev] 初始化NewBing具有Cookies")
+
+        self.chatbot = Chatbot(**params)
+
         self.style = style
         # 随机一个uuid作为实例名
         import uuid

@@ -51,7 +51,14 @@
 
 使用的是 [acheong08/EdgeGPT](https://github.com/acheong08/EdgeGPT)  
 
- - 修改`revcfg.py`中的`reverse_lib`的值为`acheong08/EdgeGPT`即可，不需要鉴权
+ - 修改`revcfg.py`中的`reverse_lib`的值为`acheong08/EdgeGPT`即可使用
+ - 若您提供`cookies`，则对话次数更多，稳定性更高，请参考下方的配置方法
+
+    1. 安装适用于[Chrome/Edge](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm) 或 [Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/) 的Cookies编辑器插件
+    2. 访问 `bing.com/chat`
+    3. 打开这个插件
+    4. 点击 `Export` 按钮, 复制JSON格式的Cookies
+    5. 在QChatGPT主程序`main.py`同目录下新建文件`cookies.json`, 将刚才复制的内容粘贴进去
 
 #### 配置
 
