@@ -52,7 +52,7 @@
 使用的是 [acheong08/EdgeGPT](https://github.com/acheong08/EdgeGPT)  
 
  - 修改`revcfg.py`中的`reverse_lib`的值为`acheong08/EdgeGPT`即可使用
- - 若您提供`cookies`，则对话次数更多，稳定性更高，请参考下方的配置方法
+ - 若您提供`cookies`，请参考下方的配置方法（我也不知道用不用Cookies有什么区别，要是不带Cookies用不了，可以试试带Cookies）
 
     1. 安装适用于[Chrome/Edge](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm) 或 [Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/) 的Cookies编辑器插件
     2. 访问 `bing.com/chat`
