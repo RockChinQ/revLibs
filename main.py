@@ -11,7 +11,7 @@ from revChatGPT.V1 import Chatbot
 import plugins.revLibs.pkg.process.revss as revss
 import plugins.revLibs.pkg.process.procmsg as procmsg
 import plugins.revLibs.pkg.process.proccmd as proccmd
-from EdgeGPT import ConversationStyle
+from EdgeGPT.EdgeGPT import ConversationStyle
 
 """
 接入ChatGPT的逆向库
