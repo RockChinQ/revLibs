@@ -1,4 +1,4 @@
-from EdgeGPT import ConversationStyle
+from EdgeGPT.EdgeGPT import ConversationStyle
 # 选择使用的逆向库
 # 目前支持以下库：
 # - "acheong08/ChatGPT.V1": acheong08/ChatGPT库的V1版本
