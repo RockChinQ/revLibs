@@ -41,6 +41,15 @@ def process_message(session_name: str, prompt: str, host: PluginHost, **kwargs) 
 
             reply_message = all_reply
 
+            # 发送使用量信息
+            from pkg.utils.context import get_openai_manager
+
+            openai_mgr = get_openai_manager()
+            openai_mgr.audit_mgr.report_to_server(
+                revcfg.reverse_lib,
+                len(reply_message)
+            )
+
             break
         except Exception as e:
             traceback.print_exc()
