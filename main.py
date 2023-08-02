@@ -1,7 +1,7 @@
 import traceback
 
 from pkg.plugin.models import *
-from pkg.plugin.host import EventContext, PluginHost
+from pkg.plugin.host import EventContext, PluginHost, emit
 
 import time
 import os
@@ -108,14 +108,46 @@ class RevLibsPlugin(Plugin):
         @on(PersonNormalMessageReceived)
         @on(GroupNormalMessageReceived)
         def normal_message_received(inst, event: EventContext, **kwargs):
-            reply_message = ""
+            event.prevent_default()
+            event.prevent_postorder()
+
+            reply = []
+
             try:
+
+                prefix = revcfg.reply_prefix
+                reply_message = ""
                 reply_message = procmsg.process_message(session_name=kwargs['launcher_type']+"_"+str(kwargs['launcher_id']),
                                                         prompt=kwargs['text_message'], **kwargs)
 
                 logging.debug("[rev] " + reply_message)
 
                 reply_message = reply_message
+
+                # 触发NormalMessageResponded事件
+                args = {
+                    "launcher_type": kwargs['launcher_type'],
+                    "launcher_id": kwargs['launcher_id'],
+                    "sender_id": kwargs['sender_id'],
+                    "session": None,
+                    "prefix": prefix,
+                    "response_text": reply_message,
+                    "finish_reason": "revLibs."+revcfg.reverse_lib+".finish",
+                }
+
+                inter_event: EventContext = emit(NormalMessageResponded, **args)
+
+                reply = []
+
+                if inter_event.get_return_value("prefix") is not None:
+                    prefix = inter_event.get_return_value("prefix")
+                
+                if inter_event.get_return_value("reply") is not None:
+                    reply = inter_event.get_return_value("reply")
+                
+                if not inter_event.is_prevented_default():
+                    reply = [prefix + reply_message]
+
             except Exception as e:
                 logging.error("[rev] " + traceback.format_exc())
                 import config
@@ -134,14 +166,13 @@ class RevLibsPlugin(Plugin):
                 else:
                     reply_message = "处理消息时出现错误，请联系管理员"+"\n"+traceback.format_exc()
                 
+                reply = [revcfg.reply_prefix+reply_message]
+
             if reply_message != "":
                 event.add_return(
                     "reply",
-                    ["{}".format(revcfg.reply_prefix)+reply_message]
+                    reply,
                 )
-
-            event.prevent_default()
-            event.prevent_postorder()
 
         @on(PersonCommandSent)
         @on(GroupCommandSent)
