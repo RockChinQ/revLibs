@@ -43,10 +43,28 @@ class RevChatGPTV1(RevLibInterface):
     def get_reply(self, prompt: str, **kwargs) -> Tuple[str, dict]:
         import revcfg
         logging.debug("[rev] 请求ChatGPT回复: {}".format(prompt))
+
+        # 构建函数代理
+        funcs = []
+
+        import pkg.plugin.models as models
+        import pkg.plugin.host as plugin_host
+        import pkg.openai.funcmgr as funcmgr
+        if hasattr(models, "require_ver"):
+            funcs = funcmgr.get_func_schema_list()
+            for func in funcs:
+                func['function'] = plugin_host.__function_inst_map__[func['name']]
+        
+        from .fproxy import Proxy
+
+        fp = Proxy(funcs)
+
         try:
             get_lock(self.inst_name).acquire()
             if self.chatbot is None:
                 raise Exception("acheong08/ChatGPT.V1 逆向接口未初始化")
+
+            prompt = fp.prompt(prompt)
             
             reply_gen = self.chatbot.ask(prompt, **kwargs)
             already_reply_msg = ""
@@ -63,13 +81,38 @@ class RevChatGPTV1(RevLibInterface):
                     assert isinstance(reply['message'], str)
                     reply['message'] = reply['message'].replace(already_reply_msg, "")
 
-                # 判断是否达到分节长度
-                if "message" in reply and len(reply['message']) >= 64:
-                    yield reply['message'], reply
-                    already_reply_msg += reply['message']
-                    reply = {}
-
             logging.debug("接收完毕: {}".format(reply))
+
+            # 检查是否有JSON函数调用
+            is_func_call, func_name, args = fp.extra_function_call(reply['message'])
+
+            while is_func_call:
+                logging.info("[REV] 执行函数调用: {} {}".format(func_name, args))
+                
+                result = ""
+
+                try:
+                    result = fp.call(func_name, args)
+                    logging.debug("func result: {}".format(result))
+                    logging.info("[REV] 函数调用完成。")
+                except Exception as e:
+                    logging.info("[REV] 函数调用失败。")
+                    result = "error: failed to call function: "+str(e)
+                
+                reply = {}
+
+                for data in self.chatbot.ask(
+                    prompt="Function call result: "+result
+                ):
+                    try:
+                        assert 'message' in data
+                        reply = data
+                    except:
+                        continue
+
+                logging.debug("ChatGPT's output: {}".format(reply['message']))
+
+                is_func_call, func_name, args = fp.extra_function_call(reply['message'])
 
             yield reply['message'], reply
         except Exception as e:
