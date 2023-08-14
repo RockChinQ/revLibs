@@ -1,5 +1,6 @@
 # RevLib Support for QChatGPT
 
+> 2023/8/14 现已支持`Claude`，请查看下方的使用方法  
 > 2023/8/03 逆向库现已支持`函数调用`, 配置方法同[主程序配置方法](https://github.com/RockChinQ/QChatGPT/wiki/%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8-%E5%86%85%E5%AE%B9%E5%87%BD%E6%95%B0)  
 > 2023/5/14 已支持通过[Soulter/hugging-chat-api](https://github.com/Soulter/hugging-chat-api)接入[HuggingChat](https://huggingface.co/chat/)  
 
