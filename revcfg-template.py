@@ -5,6 +5,7 @@ from EdgeGPT.EdgeGPT import ConversationStyle
 # - "acheong08/EdgeGPT": acheong08/EdgeGPT库，接入new bing
 # - "Soulter/hugging-chat-api": Soulter/hugging-chat-api库，接入hugging chat
 # - "KoushikNavuluri/Claude-API": KoushikNavuluri/Claude-API库，接入Claude
+# - "dsdanielpark/Bard-API": dsdanielpark/Bard-API库，接入Bard
 reverse_lib = "acheong08/ChatGPT.V1"
 
 # [必填][❗此说明很重要，请您认真阅读❗] OpenAI账户信息
