@@ -38,7 +38,7 @@ def check_config():
 
 
 # 注册插件
-@register(name="revLibs", description="接入acheong08/ChatGPT等逆向库", version="0.7.5", author="RockChinQ")
+@register(name="revLibs", description="接入acheong08/ChatGPT、Claude、Bard等逆向库", version="0.7.6", author="RockChinQ")
 class RevLibsPlugin(Plugin):
 
     chatbot: Chatbot = None
