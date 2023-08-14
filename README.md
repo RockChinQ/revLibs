@@ -33,6 +33,16 @@
 到`QChatGPT`程序目录编辑`revcfg.py`文件，根据注释修改必填配置项。  
 配置完成后重新启动主程序以使用。
 
+## Cookies获取方法
+
+大部分逆向库基于Cookies登录，因此需要获取Cookies。这里讲解了获取一个网站的Cookies的详细步骤，您可以先查看下方选择逆向库的步骤，到需要的网站使用以下方式获取Cookies。
+
+1. 安装适用于[Chrome/Edge](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm) 或 [Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/) 的Cookies编辑器插件
+2. 访问 目标网站
+3. 打开这个插件
+4. 点击 `Export` 按钮, 复制JSON格式的Cookies
+5. 将`Cookies`保存到指定的文件中
+
 ## 选择逆向库
 
 目前支持的逆向库及使用方式如下:
@@ -40,23 +50,17 @@
 <details>
 <summary>ChatGPT网页版</summary>
 
-本插件默认使用的逆向库，使用方法请参考上方文档及配置文件注释。  
+本插件默认使用的逆向库，使用方法请参考配置文件注释。
 使用的是 [acheong08/ChatGPT](https://github.com/acheong08/ChatGPT)  
 </details>
 
 <details>
-<summary>New Bing</summary>
+<summary>New Bing(暂不可用)</summary>
 
 使用的是 [acheong08/EdgeGPT](https://github.com/acheong08/EdgeGPT)  
 
- - 修改`revcfg.py`中的`reverse_lib`的值为`acheong08/EdgeGPT`即可使用
- - 若您提供`cookies`，请参考下方的配置方法（我也不知道用不用Cookies有什么区别，要是不带Cookies用不了，可以试试带Cookies）
-
-    1. 安装适用于[Chrome/Edge](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm) 或 [Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/) 的Cookies编辑器插件
-    2. 访问 `bing.com/chat`
-    3. 打开这个插件
-    4. 点击 `Export` 按钮, 复制JSON格式的Cookies
-    5. 在QChatGPT主程序`main.py`同目录下新建文件`cookies.json`, 将刚才复制的内容粘贴进去
+ - 修改`revcfg.py`中的`reverse_lib`的值为`acheong08/EdgeGPT`
+ - 获取[NewBing](https://bing.com/chat)的Cookies，保存到`cookies.json`中
 
 #### 配置
 
@@ -76,13 +80,18 @@ output_references = False
 <summary>HuggingChat</summary>
 
 1. 在`revcfg.py`中修改`reverse_lib`的值为`Soulter/hugging-chat-api`
-2. 安装适用于[Chrome/Edge](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm) 或 [Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/) 的Cookies编辑器插件
-3. 访问 `huggingface.co/chat`
-4. 打开这个插件
-5. 点击 `Export` 按钮, 复制JSON格式的Cookies
-6. 在QChatGPT主程序`main.py`同目录下新建文件`hugchat.json`, 将刚才复制的内容粘贴进去
+2. 获取[HuggingChat](https://huggingface.co/chat/)的Cookies，保存到`hugchat.json`中
 
 </details>
+
+<details>
+<summary>Claude</summary>
+
+1. 在`revcfg.py`中修改`reverse_lib`的值为`KoushikNavuluri/Claude-API`
+2. 获取[Claude](https://claude.ai/chats)的Cookies，保存到`claude.json`中
+
+</details>
+
 <br/>
 
 ### 🚫请勿修改`revcfg-template.py`的内容，配置项请在主程序`config.py`同目录的`revcfg.py`中修改🚫
