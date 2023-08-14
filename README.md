@@ -105,3 +105,10 @@ output_references = False
 <br/>
 
 ### 🚫请勿修改`revcfg-template.py`的内容，配置项请在主程序`config.py`同目录的`revcfg.py`中修改🚫
+
+## 特别感谢
+
+> 向所有致力于人工智能民主化的开发者致敬。  
+> Salute to all developers committed to the democratization of artificial intelligence.  
+> 인공지능 민주화에 힘쓴 모든 개발자들에게 경의를 표합니다.  
+> 人工知能の民主化に取り組むすべての開発者に敬意を表します。
