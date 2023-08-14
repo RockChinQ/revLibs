@@ -3,3 +3,4 @@ EdgeGPT~=0.13.2
 hugchat
 requests
 claude-api
+bardapi

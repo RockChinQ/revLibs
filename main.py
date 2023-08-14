@@ -96,6 +96,14 @@ class RevLibsPlugin(Plugin):
                 import plugins.revLibs.pkg.process.revss as revss
                 revss.__rev_interface_impl_class__ = claudeInst
                 logging.info("[rev] 已加载逆向库KoushikNavuluri/Claude-API, 使用接口实现类: " + str(claudeInst))
+            elif revcfg.reverse_lib == "dsdanielpark/Bard-API":
+                import plugins.revLibs.pkg.process.impls.bard as bard
+
+                bardInst = bard.BardImpl
+
+                import plugins.revLibs.pkg.process.revss as revss
+                revss.__rev_interface_impl_class__ = bardInst
+                logging.info("[rev] 已加载逆向库dsdanielpark/Bard-API, 使用接口实现类: " + str(bardInst))
             else:
                 logging.error("[rev] 未知的逆向库: " + revcfg.reverse_lib + ", 请检查配置文件是否填写正确或尝试更新逆向库插件")
                 time.sleep(5)

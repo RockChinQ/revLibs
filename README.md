@@ -1,6 +1,6 @@
 # RevLib Support for QChatGPT
 
-> 2023/8/14 现已支持`Claude`，请查看下方的使用方法  
+> 2023/8/14 现已支持`Claude`和`Bard`，请查看下方的使用方法  
 > 2023/8/03 逆向库现已支持`函数调用`, 配置方法同[主程序配置方法](https://github.com/RockChinQ/QChatGPT/wiki/%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8-%E5%86%85%E5%AE%B9%E5%87%BD%E6%95%B0)  
 > 2023/5/14 已支持通过[Soulter/hugging-chat-api](https://github.com/Soulter/hugging-chat-api)接入[HuggingChat](https://huggingface.co/chat/)  
 
@@ -90,6 +90,15 @@ output_references = False
 
 1. 在`revcfg.py`中修改`reverse_lib`的值为`KoushikNavuluri/Claude-API`
 2. 获取[Claude](https://claude.ai/chats)的Cookies，保存到`claude.json`中
+
+</details>
+
+<details>
+
+<summary>Google Bard</summary>
+
+1. 在`revcfg.py`中修改`reverse_lib`的值为`dsdanielpark/Bard-API`
+2. 获取[Bard](https://bard.google.com/)的Cookies，保存到`bard.json`中
 
 </details>
 
