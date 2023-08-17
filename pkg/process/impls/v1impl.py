@@ -101,8 +101,19 @@ class RevChatGPTV1(RevLibInterface):
                 
                 reply = {}
 
+                prompt = f"""## Function call result: 
+
+```
+{result}
+```
+
+## Rules
+
+- If you haven't done completely, you can call function again.
+- Please reply in the user's language."""
+
                 for data in self.chatbot.ask(
-                    prompt="Function call result: "+result
+                    prompt=prompt,
                 ):
                     try:
                         assert 'message' in data

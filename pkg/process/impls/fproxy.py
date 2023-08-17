@@ -31,6 +31,10 @@ class Proxy:
 # User's input:
 {user_prompt}
 
+# Rules
+
+- You can only call one function at a time.
+
 # Your output:
 """.strip()
         funcs = ""
@@ -105,8 +109,8 @@ f"""- name: {func['name']}
         for json_str in json_strs:
             try:
                 # 删除所有// xxx
-                json_str = re.sub(r"//.*", "", json_str)
-                
+                json_str = re.sub(r",\s*//.*", "", json_str)
+
                 json_data = json.loads(json_str)
                 func_name = json_data['name']
                 args = json_data['args']
