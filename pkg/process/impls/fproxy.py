@@ -104,6 +104,9 @@ f"""- name: {func['name']}
         # 逐个检查json数据是否符合格式
         for json_str in json_strs:
             try:
+                # 删除所有// xxx
+                json_str = re.sub(r"//.*", "", json_str)
+                
                 json_data = json.loads(json_str)
                 func_name = json_data['name']
                 args = json_data['args']
