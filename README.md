@@ -46,7 +46,7 @@
 
 ## 选择逆向库
 
-目前支持的逆向库及使用方式如下:
+目前支持的逆向库及使用方式如下, 下方所述文件保存位置均为主程序`config.py`同目录，若无此文件，请自行创建：
 
 <details>
 <summary>ChatGPT网页版</summary>
@@ -99,6 +99,13 @@ output_references = False
 
 1. 在`revcfg.py`中修改`reverse_lib`的值为`dsdanielpark/Bard-API`
 2. 获取[Bard](https://bard.google.com/)的Cookies，保存到`bard.json`中
+
+</details>
+
+<details>
+<summary>gpt4free</summary>
+
+接入[xtekky/gpt4free](https://github.com/xtekky/gpt4free)自动从数个平台选择可用的 GPT-4，**无需鉴权**，但很不稳定，仅需要在`revcfg.py`中修改`reverse_lib`的值为`xtekky/gpt4free`即可。
 
 </details>
 

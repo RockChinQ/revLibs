@@ -6,6 +6,7 @@ from EdgeGPT.EdgeGPT import ConversationStyle
 # - "Soulter/hugging-chat-api": Soulter/hugging-chat-api库，接入hugging chat
 # - "KoushikNavuluri/Claude-API": KoushikNavuluri/Claude-API库，接入Claude
 # - "dsdanielpark/Bard-API": dsdanielpark/Bard-API库，接入Bard
+# - "xtekky/gpt4free": xtekky/gpt4free库，接入多个平台的免费的 GPT-4，无需鉴权
 reverse_lib = "acheong08/ChatGPT.V1"
 
 # [必填][❗此说明很重要，请您认真阅读❗] OpenAI账户信息
