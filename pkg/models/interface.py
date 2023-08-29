@@ -4,6 +4,10 @@ from typing import Tuple
 class RevLibInterface:
     """逆向库接口"""
 
+    @staticmethod
+    def create_instance() -> tuple["RevLibInterface", bool, dict]:
+        raise NotImplementedError
+
     def get_rev_lib_inst(self):
         raise NotImplementedError
 

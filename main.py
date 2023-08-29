@@ -64,46 +64,23 @@ class RevLibsPlugin(Plugin):
             setattr(revcfg, "new_bing_style", ConversationStyle.balanced)
 
         try:
-            if revcfg.reverse_lib == "acheong08/ChatGPT.V1":
-                import plugins.revLibs.pkg.process.impls.v1impl as v1impl
 
-                v1implInst = v1impl.RevChatGPTV1
+            from plugins.revLibs.pkg.process.impls import v1impl, edgegpt, hugchat, claude, bard, gpt4free
 
-                import plugins.revLibs.pkg.process.revss as revss
-                revss.__rev_interface_impl_class__ = v1implInst
-                logging.info("[rev] 已加载逆向库acheong08/ChatGPT.V1, 使用接口实现类: " + str(v1implInst))
-            elif revcfg.reverse_lib == "acheong08/EdgeGPT":
-                import plugins.revLibs.pkg.process.impls.edgegpt as edgegpt
+            reverse_lib_mapping = {
+                "acheong08/ChatGPT.V1": v1impl.RevChatGPTV1,
+                "acheong08/EdgeGPT": edgegpt.EdgeGPTImpl,
+                "Soulter/hugging-chat-api": hugchat.HugChatImpl,
+                "KoushikNavuluri/Claude-API": claude.ClaudeImpl,
+                "dsdanielpark/Bard-API": bard.BardImpl,
+                "xtekky/gpt4free": gpt4free.GPT4FreeImpl,
+            }
 
-                edgegptInst = edgegpt.EdgeGPTImpl
+            import plugins.revLibs.pkg.process.revss as revss
 
-                import plugins.revLibs.pkg.process.revss as revss
-                revss.__rev_interface_impl_class__ = edgegptInst
-                logging.info("[rev] 已加载逆向库acheong08/EdgeGPT, 使用接口实现类: " + str(edgegptInst))
-            elif revcfg.reverse_lib == "Soulter/hugging-chat-api":
-                import plugins.revLibs.pkg.process.impls.hugchat as hugchat
-
-                hugchatInst = hugchat.HugChatImpl
-
-                import plugins.revLibs.pkg.process.revss as revss
-                revss.__rev_interface_impl_class__ = hugchatInst
-                logging.info("[rev] 已加载逆向库Soulter/hugging-chat-api, 使用接口实现类: " + str(hugchatInst))
-            elif revcfg.reverse_lib == "KoushikNavuluri/Claude-API":
-                import plugins.revLibs.pkg.process.impls.claude as claude
-
-                claudeInst = claude.ClaudeImpl
-
-                import plugins.revLibs.pkg.process.revss as revss
-                revss.__rev_interface_impl_class__ = claudeInst
-                logging.info("[rev] 已加载逆向库KoushikNavuluri/Claude-API, 使用接口实现类: " + str(claudeInst))
-            elif revcfg.reverse_lib == "dsdanielpark/Bard-API":
-                import plugins.revLibs.pkg.process.impls.bard as bard
-
-                bardInst = bard.BardImpl
-
-                import plugins.revLibs.pkg.process.revss as revss
-                revss.__rev_interface_impl_class__ = bardInst
-                logging.info("[rev] 已加载逆向库dsdanielpark/Bard-API, 使用接口实现类: " + str(bardInst))
+            if hasattr(revcfg, "reverse_lib") and revcfg.reverse_lib in reverse_lib_mapping:
+                revss.__rev_interface_impl_class__ = reverse_lib_mapping[revcfg.reverse_lib]
+                logging.info("[rev] 已加载逆向库{}, 使用接口实现类: {}".format(revcfg.reverse_lib, str(reverse_lib_mapping[revcfg.reverse_lib])))
             else:
                 logging.error("[rev] 未知的逆向库: " + revcfg.reverse_lib + ", 请检查配置文件是否填写正确或尝试更新逆向库插件")
                 time.sleep(5)

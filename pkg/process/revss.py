@@ -44,30 +44,35 @@ class RevSession:
 
     def __init__(self, name: str):
         self.name = name
-        if __rev_interface_impl_class__ is RevChatGPTV1:
-            logging.debug("[rev] 逆向接口实现为RevChatGPTV1")
-            self.__rev_interface_impl__, valid, acc = __rev_interface_impl_class__.create_instance()
-            self.using_account = acc
-            self.reset()
-        elif __rev_interface_impl_class__ is EdgeGPTImpl:
-            logging.debug("[rev] 逆向接口实现为EdgeGPTImpl")
-            self.__rev_interface_impl__,_ = __rev_interface_impl_class__.create_instance()
-            self.reset()
-        elif __rev_interface_impl_class__ is HugChatImpl:
-            logging.debug("[rev] 逆向接口实现为HugChatImpl")
-            self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
-            self.reset()
-        elif __rev_interface_impl_class__ is ClaudeImpl:
-            logging.debug("[rev] 逆向接口实现为ClaudeImpl")
-            self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
-            self.reset()
-        elif __rev_interface_impl_class__ is BardImpl:
-            logging.debug("[rev] 逆向接口实现为BardImpl")
-            self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
-            self.reset()
+
+        logging.debug("[rev] 逆向库接口实现为 {}".format(__rev_interface_impl_class__))
+        self.__rev_interface_impl__, valid, acc = __rev_interface_impl_class__.create_instance()
+        self.using_account = acc
+        self.reset()
+
+        # if __rev_interface_impl_class__ is RevChatGPTV1:
+        #     logging.debug("[rev] 逆向接口实现为RevChatGPTV1")
+        #     self.__rev_interface_impl__, valid, acc = __rev_interface_impl_class__.create_instance()
+        #     self.using_account = acc
+        #     self.reset()
+        # elif __rev_interface_impl_class__ is EdgeGPTImpl:
+        #     logging.debug("[rev] 逆向接口实现为EdgeGPTImpl")
+        #     self.__rev_interface_impl__,_ = __rev_interface_impl_class__.create_instance()
+        #     self.reset()
+        # elif __rev_interface_impl_class__ is HugChatImpl:
+        #     logging.debug("[rev] 逆向接口实现为HugChatImpl")
+        #     self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
+        #     self.reset()
+        # elif __rev_interface_impl_class__ is ClaudeImpl:
+        #     logging.debug("[rev] 逆向接口实现为ClaudeImpl")
+        #     self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
+        #     self.reset()
+        # elif __rev_interface_impl_class__ is BardImpl:
+        #     logging.debug("[rev] 逆向接口实现为BardImpl")
+        #     self.__rev_interface_impl__,_,_ = __rev_interface_impl_class__.create_instance()
+        #     self.reset()
 
         threading.Thread(target=self.check_expire_loop, daemon=True).start()
-
 
     def check_expire_loop(self):
         while True:
