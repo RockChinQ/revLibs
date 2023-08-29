@@ -1,8 +1,8 @@
 # RevLib Support for QChatGPT
 
+> 2023/8/29 现已支持`gpt4free`，请查看下方的使用方法  
 > 2023/8/14 现已支持`Claude`和`Bard`，请查看下方的使用方法  
 > 2023/8/03 逆向库现已支持`函数调用`, 配置方法同[主程序配置方法](https://github.com/RockChinQ/QChatGPT/wiki/%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8-%E5%86%85%E5%AE%B9%E5%87%BD%E6%95%B0)  
-> 2023/5/14 已支持通过[Soulter/hugging-chat-api](https://github.com/Soulter/hugging-chat-api)接入[HuggingChat](https://huggingface.co/chat/)  
 
 
 得益于[QChatGPT项目](https://github.com/RockChinQ/QChatGPT)的插件功能，此插件将允许接入`ChatGPT网页版`用以替换原项目主线的GPT-3模型接口，提升回复质量。  
