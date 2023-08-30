@@ -4,3 +4,4 @@ hugchat
 requests
 claude-api
 bardapi
+g4f
