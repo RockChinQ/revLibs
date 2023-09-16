@@ -11,7 +11,6 @@
 ## 安装方式
 
 > 若您未安装QChatGPT程序，请先查看原仓库[文档](https://github.com/RockChinQ/QChatGPT)  
-> 目前已支持中国主机使用，请在revcfg.py中修改openai_account字段，按照注释使用access_token方式登录
 
 使用管理员账号私聊机器人发送指令:
 
@@ -53,6 +52,9 @@
 
 本插件默认使用的逆向库，使用方法请参考配置文件注释。
 使用的是 [acheong08/ChatGPT](https://github.com/acheong08/ChatGPT)  
+
+> 目前已支持中国主机使用，请在revcfg.py中修改openai_account字段，按照注释使用access_token方式登录
+
 </details>
 
 <details>
