@@ -25,9 +25,21 @@ class GPT4FreeImpl(RevLibInterface):
 
         from g4f.Provider import __all__ as providers
 
+        providers = providers.copy()
+
         exclude = [
             'Acytoo'
         ]
+
+        import revcfg
+        
+        if hasattr(revcfg, 'g4f_use_adapters') and len(revcfg.g4f_use_adapters) > 0:
+            providers = revcfg.g4f_use_adapters
+            logging.debug("[rev] 已指定provider列表: {}".format(providers))
+
+        if hasattr(revcfg, 'g4f_exclude_adapters') and len(revcfg.g4f_exclude_adapters) > 0:
+            exclude = revcfg.g4f_exclude_adapters
+            logging.debug("[rev] 已指定排除provider列表: {}".format(exclude))
 
         for provider in providers:
 

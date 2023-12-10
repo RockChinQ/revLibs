@@ -91,3 +91,21 @@ reply_prefix = "[REV]"
 # 获取回复失败时的重试次数
 # 若为0则不重试
 retry_when_fail = 3
+
+# 使用 gpt4free 时，仅使用的适配器名称列表
+# 程序将在这些适配器中选择一个可用的适配器
+# 例如：
+# g4f_use_adapters = ['Acytoo', 'FakeGpt']
+# 
+# 若为 空列表 则会测试所有适配器并自动选择
+# 所有适配器列表可以在
+# https://github.com/xtekky/gpt4free/blob/main/g4f/Provider/__init__.py
+# 中找到
+# 也可以再启动机器人之后，发送命令 !provider 列出所有适配器
+#
+# 注意：设置此字段可能会影响可用性，请确认指定的适配器可用
+g4f_use_adapters = []
+
+# 使用 gpt4free 时，排除的适配器名称
+# 此字段优先级高于 g4f_use_adapters
+g4f_exclude_adapters = []
