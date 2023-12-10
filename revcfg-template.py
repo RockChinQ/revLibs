@@ -101,7 +101,7 @@ retry_when_fail = 3
 # 所有适配器列表可以在
 # https://github.com/xtekky/gpt4free/blob/main/g4f/Provider/__init__.py
 # 中找到
-# 也可以再启动机器人之后，发送命令 !provider 列出所有适配器
+# 也可以再启动机器人之后，发送命令 `!provider ls` 列出所有适配器
 #
 # 注意：设置此字段可能会影响可用性，请确认指定的适配器可用
 g4f_use_adapters = []

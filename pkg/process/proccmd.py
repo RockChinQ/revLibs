@@ -1,6 +1,7 @@
 import plugins.revLibs.pkg.process.revss as revss
 import plugins.revLibs.pkg.process.impls.v1impl as v1impl
 import plugins.revLibs.pkg.process.impls.edgegpt as edgegpt
+import plugins.revLibs.pkg.process.impls.gpt4free as gpt4free
 
 
 def process_command(session_name: str, **kwargs) -> str:
@@ -108,5 +109,23 @@ def process_command(session_name: str, **kwargs) -> str:
                 reply_message = "当前风格为: {}，可选参数: 创意, 平衡, 精确\n例如: !style 创意".format(current)
         else:
             reply_message = "仅当使用New Bing逆向库时可切换风格"
+
+    elif cmd == "provider":
+        if revss.__rev_interface_impl_class__ == gpt4free.GPT4FreeImpl:
+            if len(params) >= 1:
+                if params[0] == 'ls':
+                    from g4f.Provider import __all__ as providers
+                    providers = providers.copy()
+                    reply_message = "适配器列表:\n"
+                    for adapter in providers:
+                        reply_message += "  - {}\n".format(adapter)
+                    reply_message = reply_message[:-1]
+            else:
+                if gpt4free.GPT4FreeImpl.use_provider is None:
+                    reply_message = "当前未选择适配器，第一次对话时将测试并选择适配器"
+                else:
+                    reply_message = "当前使用的适配器: {}".format(gpt4free.GPT4FreeImpl.use_provider)
+        else:
+            reply_message = "仅当使用gpt4free逆向库时可查看适配器"
 
     return reply_message

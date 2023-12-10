@@ -48,7 +48,7 @@
 目前支持的逆向库及使用方式如下, 下方所述文件保存位置均为主程序`config.py`同目录，若无此文件，请自行创建：
 
 <details>
-<summary>ChatGPT网页版</summary>
+<summary>ChatGPT网页版(暂不可用)</summary>
 
 本插件默认使用的逆向库，使用方法请参考配置文件注释。
 使用的是 [acheong08/ChatGPT](https://github.com/acheong08/ChatGPT)  
@@ -108,6 +108,11 @@ output_references = False
 <summary>gpt4free</summary>
 
 接入[xtekky/gpt4free](https://github.com/xtekky/gpt4free)自动从数个平台选择可用的 GPT-4，**无需鉴权**，但很不稳定，仅需要在`revcfg.py`中修改`reverse_lib`的值为`xtekky/gpt4free`即可。
+
+#### 配置
+
+- gpt4free 提供了多个渠道，默认情况下程序会自动测试并选择可用的渠道，可以在 `revcfg.py` 中指定要使用的渠道和要排除的渠道
+- 向机器人发送 `!provider ls` 来查看所有支持设置的渠道, 发送 `!provider` 查看当前使用的渠道
 
 </details>
 

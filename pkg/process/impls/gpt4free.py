@@ -21,7 +21,7 @@ class GPT4FreeImpl(RevLibInterface):
 
     @classmethod
     def select_provider(cls):
-        logging.debug("[rev] 测试并选择provider")
+        logging.info("[rev] 测试并选择provider，如果某个provider测试过久，可以在revcfg.py中将其排除")
 
         from g4f.Provider import __all__ as providers
 
@@ -46,7 +46,7 @@ class GPT4FreeImpl(RevLibInterface):
             if provider in exclude:
                 continue
 
-            logging.debug("[rev] 测试provider: {}".format(provider))
+            logging.info("[rev] 测试provider: {}".format(provider))
             provider = getattr(g4f.Provider, provider)
             try:
                 response = g4f.ChatCompletion.create(
