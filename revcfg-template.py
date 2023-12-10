@@ -84,6 +84,19 @@ new_bing_style = ConversationStyle.balanced
 # 使用New Bing时是否显示参考资料
 output_references = True
 
+# 使用 revChatGPT 时使用的反向代理
+# 现在不用反向代理基本没法用了吧，可以自己上github找一下
+# 用来搭建 ChatGPT 反向代理的项目
+# 或者到 QChatGPT 主页找到社区群加进去有公用的反向代理
+# 这里默认的是作者的反向代理，但是不保证一直可用
+revchatgpt_reverse_proxy = "https://chatproxy.rockchin.top/api/"
+
+# 使用 New Bing (EdgeGPT) 时使用的反向代理
+# 参考 revchatgpt_reverse_proxy，但是你需要的是 New Bing 的反向代理
+# 需要不同的项目，社区群里也有公用的
+# 这里默认的是社区群里的反向代理，但是不保证一直可用
+new_bing_reverse_proxy = "https://sydney.ikunshare.link/"
+
 # 消息回复前缀
 # 建议保留此前缀，以便区分GPT-3和此插件的回复
 reply_prefix = "[REV]"

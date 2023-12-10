@@ -21,6 +21,8 @@ class EdgeGPTImpl(RevLibInterface):
 
     inst_name: str
 
+    wss_link: str = "wss://sydney.bing.com/sydney/ChatHub"
+
     @staticmethod
     def create_instance() -> tuple[RevLibInterface, bool]:
         import revcfg
@@ -37,6 +39,10 @@ class EdgeGPTImpl(RevLibInterface):
         if hasattr(revcfg, "new_bing_proxy"):
             params["proxy"] = revcfg.new_bing_proxy
             logging.info("[rev] 初始化NewBing使用代理: {}".format(revcfg.new_bing_proxy))
+
+        if hasattr(revcfg, "new_bing_reverse_proxy") and revcfg.new_bing_reverse_proxy != "":
+            self.wss_link = revcfg.new_bing_reverse_proxy
+            logging.info("[rev] 初始化NewBing使用反向代理: {}".format(revcfg.new_bing_reverse_proxy))
 
         if os.path.exists("cookies.json"):
             with open("cookies.json", "r") as f:
@@ -57,7 +63,7 @@ class EdgeGPTImpl(RevLibInterface):
     def get_reply(self, prompt: str, **kwargs) -> tuple[str, dict]:
         """获取回复"""
         logging.debug("[rev] 请求bing回复: {}".format(prompt))
-        task = self.chatbot.ask(prompt, conversation_style=self.style)
+        task = self.chatbot.ask(prompt, conversation_style=self.style, wss_link=self.wss_link)
         resp = asyncio.run(task)
         logging.debug(json.dumps(resp, indent=4, ensure_ascii=False))
 

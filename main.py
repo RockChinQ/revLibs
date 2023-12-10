@@ -13,14 +13,6 @@ import plugins.revLibs.pkg.process.procmsg as procmsg
 import plugins.revLibs.pkg.process.proccmd as proccmd
 from EdgeGPT.EdgeGPT import ConversationStyle
 
-"""
-接入ChatGPT的逆向库
-"""
-
-import revChatGPT.V1 as revcgpt
-
-revcgpt.BASE_URL = "https://chatproxy.rockchin.top/api/"
-
 
 def check_config():
     this_file = __file__

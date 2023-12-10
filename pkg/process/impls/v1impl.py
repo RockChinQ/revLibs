@@ -31,6 +31,14 @@ class RevChatGPTV1(RevLibInterface):
 
     def __init__(self, cfg):
         logging.debug("[rev] 初始化接口实现，使用账户配置: {}".format(cfg))
+
+        import revcfg
+
+        if hasattr(revcfg, "revchatgpt_reverse_proxy") and revcfg.revchatgpt_reverse_proxy != "":
+            import revChatGPT.V1 as revcgpt
+            revcgpt.BASE_URL = revcfg.revchatgpt_reverse_proxy
+            logging.info("[rev] 已指定revchatgpt的反向代理: {}".format(revcfg.revchatgpt_reverse_proxy))
+            
         self.chatbot = Chatbot(
             config=cfg,
         )
