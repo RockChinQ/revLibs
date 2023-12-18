@@ -4,5 +4,5 @@ hugchat
 requests
 claude-api
 bardapi
-g4f
+g4f==0.1.9.3
 PyExecJS
