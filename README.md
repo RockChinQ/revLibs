@@ -48,12 +48,14 @@
 目前支持的逆向库及使用方式如下, 下方所述文件保存位置均为主程序`config.py`同目录，若无此文件，请自行创建：
 
 <details>
-<summary>ChatGPT网页版(暂不可用)</summary>
+<summary>ChatGPT网页版</summary>
 
 本插件默认使用的逆向库，使用方法请参考配置文件注释。
 使用的是 [acheong08/ChatGPT](https://github.com/acheong08/ChatGPT)  
 
-> 目前已支持中国主机使用，请在revcfg.py中修改openai_account字段，按照注释使用access_token方式登录
+> **WARNING**  
+> 必须配置反向代理才能使用，默认的是作者自建的，不一定能用，建议自己搭建。  
+> 可以参考：[另外一个项目的文档，仅参考 ChatGPT 反向代理搭建方式](https://free-one-api.rockchin.top/#/zh-CN/Adapters?id=%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86)
 
 </details>
 
